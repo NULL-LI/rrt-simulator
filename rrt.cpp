@@ -42,7 +42,32 @@ Node *RRT::getRandomNode() {
   if (drand48() > 0.9) {
     point = endPos;
   }
+  // rrt star function
 
+  if (reached()) {
+      float minDist = nearestNode->distance;
+      float distAdded = distance(point, startPos) + distance(point, endPos);
+      float startToEnd = distance(startPos, endPos);
+      int cnt=0;
+      int cntMax=1000;
+      do{
+          cnt++;
+          point(0)=drand48() * WORLD_WIDTH;
+          point(1)=drand48() * WORLD_HEIGHT;
+    distAdded = distance(point, startPos) + distance(point, endPos);
+    // to be optimized
+//    printf("minDist %f distAdded %f\n", minDist,distAdded);
+    printf("minDist %f distAdded %f startToEnd %f\n", minDist,distAdded,startToEnd);
+      }
+    while (minDist<distAdded&&cnt<cntMax);
+    if(cnt==cntMax)
+    {
+        return NULL;
+    }
+
+  }
+
+//  printf("nearestNode->distance %f\n", nearestNode->distance);
   if (point.x() >= 0 && point.x() <= WORLD_WIDTH && point.y() >= 0 &&
       point.y() <= WORLD_HEIGHT) {
     ret = new Node;
@@ -58,7 +83,7 @@ Node *RRT::getRandomNode() {
  * @param q
  * @return
  */
-int RRT::distance(Vector2f &p, Vector2f &q) {
+float RRT::distance(Vector2f &p, Vector2f &q) {
   Vector2f v = p - q;
   return sqrt(powf(v.x(), 2) + powf(v.y(), 2));
 }
@@ -173,7 +198,8 @@ void RRT::optimizePath(Node *q /*,  vector<Node *> neighbors*/) {
               ++it;
             }
           }
-          double biasCostJ = disti + distj + neighborNodes[i]->distance -neighborNodes[j]->distance;
+          double biasCostJ = disti + distj + neighborNodes[i]->distance -
+                             neighborNodes[j]->distance;
           costBiasAndCheck(neighborNodes[j], biasCostJ);
           neighborNodes[j]->parent = q;
           neighborNodes[j]->distance =
@@ -222,7 +248,7 @@ void RRT::add(Node *qNearest, Node *qNew) {
  * @return
  */
 bool RRT::reached() {
-  if (distance(lastNode->position, endPos) < END_DIST_THRESHOLD) return true;
+  if (distance(nearestNode->position, endPos) < END_DIST_THRESHOLD) return true;
   return false;
 }
 

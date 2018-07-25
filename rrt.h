@@ -27,7 +27,7 @@ public:
     Node* getRandomNode();
     Node* nearest(Vector2f point);
     Node* shortest(Vector2f point);
-    int distance(Vector2f &p, Vector2f &q);
+    float distance(Vector2f &p, Vector2f &q);
     float cost(Vector2f &p, Node *q) ;
     Vector2f newConfig(Node *q, Node *qNearest);
     void add(Node *qNearest, Node *qNew);

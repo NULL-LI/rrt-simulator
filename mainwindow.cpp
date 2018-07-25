@@ -71,22 +71,26 @@ void MainWindow::do_rrt() {
           }
         }
       }
+
+      q = rrt->nearestNode;
+      rrt->path.clear();
+
+      while (q != NULL) {
+        rrt->path.push_back(q);
+        q = q->parent;
+      }
+      renderArea->repaint();
+      char str_tmp[100];
+      sprintf(str_tmp, "Iter %d", i);
+      if (rrt->reached()) {
+        sprintf(str_tmp, "Reached Destination!\nIter %d", i);
+        //      ui->statusBox->setText(tr("Reached Destination!"));
+        //      break;
+      }
+
+      ui->statusBox->setText(tr(str_tmp));
+      QApplication::processEvents();
     }
-    q = rrt->nearestNode;
-    rrt->path.clear();
-    while (q != NULL) {
-      rrt->path.push_back(q);
-      q = q->parent;
-    }
-    renderArea->repaint();
-    if (rrt->reached()) {
-      ui->statusBox->setText(tr("Reached Destination!"));
-      //      break;
-    }
-    char str_tmp[100];
-    sprintf(str_tmp, "Iter %d", i);
-    //    ui->statusBox->setText(tr(str_tmp));
-    QApplication::processEvents();
   }
 }
 
