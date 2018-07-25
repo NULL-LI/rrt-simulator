@@ -1,6 +1,6 @@
 # RRT Simulator
 
-## RRT-STAR algorithm added
+## Informed-RRT-STAR algorithm
 
 ## Dependencies
 * Qt5
