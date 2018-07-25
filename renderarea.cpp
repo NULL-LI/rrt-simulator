@@ -21,7 +21,7 @@ void RenderArea::drawField(QPainter &painter)
     field.setTopLeft(QPoint(this->x(), this->y()));
     field.setBottomRight(QPoint(this->width()-1, this->height()-1));
     painter.setPen(Qt::black);
-    painter.setBrush(QBrush(Qt::green));
+    painter.setBrush(QBrush(Qt::white));
     painter.drawRect(field);
     painter.restore();
 }
@@ -83,8 +83,8 @@ void RenderArea::drawNodes(QPainter &painter)
 {
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::black);
-    painter.setBrush(QBrush(Qt::black));
+    painter.setPen(Qt::green);
+    painter.setBrush(QBrush(Qt::green));
     Vector2f pos;
     for(int i = 0; i < (int)rrt->nodes.size(); i++) {
         for(int j = 0; j < (int)rrt->nodes[i]->children.size(); j++) {
