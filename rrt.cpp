@@ -58,7 +58,7 @@ Node *RRT::getRandomNode() {
  * @param q
  * @return
  */
-int RRT::distance(Vector2f &p, Vector2f &q) {
+float RRT::distance(Vector2f &p, Vector2f &q) {
   Vector2f v = p - q;
   return sqrt(powf(v.x(), 2) + powf(v.y(), 2));
 }
