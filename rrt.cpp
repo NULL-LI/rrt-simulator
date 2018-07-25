@@ -45,9 +45,10 @@ Node *RRT::getRandomNode() {
   // rrt star function
 
   if (reached()) {
-      float minDist = nearestNode->distance;
+      float minDistFound = nearestNode->distance;
       float distAdded = distance(point, startPos) + distance(point, endPos);
-      float startToEnd = distance(startPos, endPos);
+//      float startToEnd = distance(startPos, endPos);
+//      printf("minDistFound %f startToEnd %f\n", minDistFound,startToEnd);
       int cnt=0;
       int cntMax=1000;
       do{
@@ -57,9 +58,8 @@ Node *RRT::getRandomNode() {
     distAdded = distance(point, startPos) + distance(point, endPos);
     // to be optimized
 //    printf("minDist %f distAdded %f\n", minDist,distAdded);
-    printf("minDist %f distAdded %f startToEnd %f\n", minDist,distAdded,startToEnd);
       }
-    while (minDist<distAdded&&cnt<cntMax);
+    while (minDistFound<distAdded/*&&cnt<cntMax*/);
     if(cnt==cntMax)
     {
         return NULL;
