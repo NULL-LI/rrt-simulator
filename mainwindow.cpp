@@ -83,9 +83,11 @@ void MainWindow::do_rrt() {
       char str_tmp[100];
       float minDistFound = rrt->nearestNode->distance;
       float startToEnd = rrt->distance(rrt->startPos, rrt->endPos);
-      sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\n", i, minDistFound,startToEnd);
+      sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\n", i, minDistFound,
+              startToEnd);
       if (rrt->reached()) {
-        sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\nReached!\n", i, minDistFound,startToEnd);
+        sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\nReached!\n", i,
+                minDistFound, startToEnd);
         //      ui->statusBox->setText(tr("Reached Destination!"));
         //      break;
       }
