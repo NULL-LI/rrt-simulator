@@ -1,19 +1,23 @@
 # RRT Simulator
 
+## RRT-STAR algorithm added
+
 ## Dependencies
 * Qt5
 * Eigen
 
 ## Compiling
 ```bash
-$ git clone https://github.com/sourishg/rrt-simulator
+
 $ cd rrt-simulator/
-$ chmod +x build.sh
-$ ./build.sh
+$ mkdir build
+$ cmake..
+$ make -j
+
 ```
 Run the exectuable as
 ```
-$ ./bin/rrt-test
+$ ../bin/rrt-test
 ```
 ## Interface
 
