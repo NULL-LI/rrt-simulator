@@ -1,4 +1,0 @@
-/home/null/algorithm/rrt-star-simulator/qt-build/CMakeFiles/edit_cache.dir
-/home/null/algorithm/rrt-star-simulator/qt-build/CMakeFiles/rebuild_cache.dir
-/home/null/algorithm/rrt-star-simulator/qt-build/CMakeFiles/rrt-test.dir
-/home/null/algorithm/rrt-star-simulator/qt-build/CMakeFiles/rrt-test_automoc.dir
