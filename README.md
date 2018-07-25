@@ -11,6 +11,7 @@
 
 $ cd rrt-simulator/
 $ mkdir build
+$ cd build
 $ cmake..
 $ make -j
 

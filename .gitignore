@@ -31,3 +31,4 @@ bin/
 build/
 qt-build/
 *.kdev*
+*.user
