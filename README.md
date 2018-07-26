@@ -2,6 +2,10 @@
 
 ## Informed-RRT-STAR algorithm
 
+First using rrt-connect to find a way to go. 
+
+After that informed-rrt-star is used for optimization.
+
 ## Dependencies
 * Qt5
 * Eigen
