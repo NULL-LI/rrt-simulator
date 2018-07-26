@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
  * @brief Start the simulator.
  */
 void MainWindow::on_startButton_clicked() {
-  //    KeepLiveBegin(true)
   if (simulated) {
     ui->statusBox->setText(tr("Please reset!"));
     renderArea->update();
@@ -81,7 +80,7 @@ void MainWindow::do_rrt() {
       }
       renderArea->repaint();
       char str_tmp[100];
-      float minDistFound = rrt->nearestNode->distance;
+      float minDistFound = rrt->nearestNode->cost;
       float startToEnd = rrt->distance(rrt->startPos, rrt->endPos);
       sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\n", i, minDistFound,
               startToEnd);
