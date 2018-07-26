@@ -24,7 +24,7 @@ private slots:
     void on_startButton_clicked();
     void on_resetButton_clicked();
     void do_rrt_connect();
-    void do_rrt();
+    void do_rrt_star();
 };
 
 #endif // MAINWINDOW_H
