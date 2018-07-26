@@ -360,6 +360,7 @@ bool RRT::restoreNodes() {
         nodes[i]->children.push_back(nodes[i+1]);
       }
     }
+    root=*(nodes.begin());
     nearestNode=*(nodes.end()-1);
     nearestDistance=distance(nearestNode->position, endPos);
     printf("nodes.size() %ld\n", nodes.size());

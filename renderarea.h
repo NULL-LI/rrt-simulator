@@ -27,7 +27,7 @@ protected:
     void drawEndPos(QPainter &event);
     void drawObstacles(QPainter &event);
     void drawNodes(QPainter &event);
-    void drawTree(shared_ptr<Node> root);
+    void drawTree(QPainter &painter,shared_ptr<Node> root);
 private:
     bool scribbling;
     QPoint lastMouseClickedPoint;

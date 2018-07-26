@@ -82,11 +82,12 @@ void RenderArea::drawObstacles(QPainter &painter) {
 void RenderArea::drawNodes(QPainter &painter) {
   painter.save();
   painter.setRenderHint(QPainter::Antialiasing);
-  painter.setPen(Qt::green);
-  painter.setBrush(QBrush(Qt::green));
   Vector2f pos;
 
   if (rrt->reached()) {
+      drawTree(painter,rrt->root);
+      painter.setPen(Qt::green);
+      painter.setBrush(QBrush(Qt::green));
     //      printf("RRT-STAR\n");
     for (int i = 0; i < (int)rrt->nodes.size(); i++) {
       for (int j = 0; j < (int)rrt->nodes[i]->children.size(); j++) {
@@ -108,6 +109,8 @@ void RenderArea::drawNodes(QPainter &painter) {
       painter.drawLine(p1, p2);
     }
   } else {
+      painter.setPen(Qt::green);
+      painter.setBrush(QBrush(Qt::green));
     //      printf("RRT-STAR\n");
     for (int i = 0; i < (int)rrt->nodes1.size(); i++) {
       for (int j = 0; j < (int)rrt->nodes1[i]->children.size(); j++) {
@@ -151,7 +154,23 @@ void RenderArea::drawNodes(QPainter &painter) {
   painter.restore();
 }
 
-void RenderArea::drawTree(shared_ptr<Node> root) {
+void RenderArea::drawTree(QPainter &painter,shared_ptr<Node> root) {
+//    printf("draw tree\n");
+    painter.setPen(Qt::lightGray);
+    painter.setBrush(QBrush(Qt::lightGray));
+    if(root->children.empty())
+    {
+        return;
+    }else {
+        for(auto iter=root->children.begin();iter!=root->children.end();iter++)
+        {
+    QPointF p1(root->position.x(),root->position.y());
+    QPointF p2((*iter)->position.x(),(*iter)->position.y());
+painter.drawLine(p1, p2);
+drawTree(painter,(*iter));
+        }
+
+    }
 
 }
 
