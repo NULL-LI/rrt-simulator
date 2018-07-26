@@ -9,7 +9,7 @@ RRT::RRT() {
   root = new Node;
   root->parent = NULL;
   root->position = startPos;
-  root->distance = 0;
+  root->cost = 0;
   lastNode = root;
   nodes.push_back(root);
   step_size = 3;
@@ -25,7 +25,7 @@ void RRT::initialize() {
   root = new Node;
   root->parent = NULL;
   root->position = startPos;
-  root->distance = 0;
+  root->cost = 0;
   lastNode = root;
   nodes.push_back(root);
   nearestNode = root;
@@ -45,7 +45,7 @@ Node *RRT::getRandomNode() {
   // rrt star function
 
   if (reached()) {
-      float minDistFound = nearestNode->distance;
+      float minDistFound = nearestNode->cost;
       float distAdded = distance(point, startPos) + distance(point, endPos);
 //      float startToEnd = distance(startPos, endPos);
 //      printf("minDistFound %f startToEnd %f\n", minDistFound,startToEnd);
@@ -90,7 +90,7 @@ float RRT::distance(Vector2f &p, Vector2f &q) {
 
 float RRT::cost(Vector2f &p, Node *q) {
   Vector2f v = p - q->position;
-  return sqrt(powf(v.x(), 2) + powf(v.y(), 2)) + q->distance;
+  return sqrt(powf(v.x(), 2) + powf(v.y(), 2)) + q->cost;
 }
 
 /**
@@ -137,7 +137,7 @@ Node *RRT::shortest(Vector2f point) {
 }
 
 void RRT::costBiasAndCheck(Node *q, double bias) {
-  q->distance += bias;
+  q->cost += bias;
   if (q->children.size() != 0) {
     vector<Node *>::iterator it = q->children.begin();
     for (; it != q->children.end();) {
@@ -145,8 +145,8 @@ void RRT::costBiasAndCheck(Node *q, double bias) {
       if (((*it)->parent) != q) {
         perror("Parent relationship error\n");
       }
-      if (((*it)->distance) < q->distance) {
-        printf("%f %f", ((*it)->distance), q->distance);
+      if (((*it)->cost) < q->cost) {
+        printf("%f %f", ((*it)->cost), q->cost);
         printf("Tree cost error\n");
       }
       it++;
@@ -158,7 +158,7 @@ void RRT::costBiasAndCheck(Node *q, double bias) {
 void RRT::optimizePath(Node *q /*,  vector<Node *> neighbors*/) {
   for (int i = 0; i < (int)neighborNodes.size(); i++) {
     float disti = distance(q->position, neighborNodes[i]->position);
-    if (disti + neighborNodes[i]->distance < q->distance) {
+    if (disti + neighborNodes[i]->cost < q->cost) {
       vector<Node *>::iterator it = q->parent->children.begin();
       for (; it != q->parent->children.end();) {
         if ((*it) == q) {
@@ -172,10 +172,10 @@ void RRT::optimizePath(Node *q /*,  vector<Node *> neighbors*/) {
           ++it;
         }
       }
-      double biasCostQ = disti + neighborNodes[i]->distance - q->distance;
+      double biasCostQ = disti + neighborNodes[i]->cost - q->cost;
       costBiasAndCheck(q, biasCostQ);
       q->parent = neighborNodes[i];
-      q->distance = disti + neighborNodes[i]->distance;
+      q->cost = disti + neighborNodes[i]->cost;
       neighborNodes[i]->children.push_back(q);
     }
 
@@ -185,8 +185,8 @@ void RRT::optimizePath(Node *q /*,  vector<Node *> neighbors*/) {
       } else {
         float distj = distance(q->position, neighborNodes[j]->position);
 
-        if (disti + distj + neighborNodes[i]->distance <
-            neighborNodes[j]->distance) {
+        if (disti + distj + neighborNodes[i]->cost <
+            neighborNodes[j]->cost) {
           vector<Node *>::iterator it =
               neighborNodes[j]->parent->children.begin();
           for (; it != neighborNodes[j]->parent->children.end();) {
@@ -198,12 +198,12 @@ void RRT::optimizePath(Node *q /*,  vector<Node *> neighbors*/) {
               ++it;
             }
           }
-          double biasCostJ = disti + distj + neighborNodes[i]->distance -
-                             neighborNodes[j]->distance;
+          double biasCostJ = disti + distj + neighborNodes[i]->cost -
+                             neighborNodes[j]->cost;
           costBiasAndCheck(neighborNodes[j], biasCostJ);
           neighborNodes[j]->parent = q;
-          neighborNodes[j]->distance =
-              disti + distj + neighborNodes[i]->distance;
+          neighborNodes[j]->cost =
+              disti + distj + neighborNodes[i]->cost;
           q->children.push_back(neighborNodes[j]);
           //          printf("Optimize Finished \n");
         }
@@ -236,8 +236,8 @@ Vector2f RRT::newConfig(Node *q, Node *qNearest) {
  */
 void RRT::add(Node *qNearest, Node *qNew) {
   qNew->parent = qNearest;
-  qNew->distance =
-      qNearest->distance + distance(qNew->position, qNearest->position);
+  qNew->cost =
+      qNearest->cost + distance(qNew->position, qNearest->position);
   qNearest->children.push_back(qNew);
   nodes.push_back(qNew);
   lastNode = qNew;

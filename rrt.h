@@ -16,7 +16,8 @@ struct Node {
     vector<Node *> children;
     Node *parent;
     Vector2f position;
-    double distance;
+    double cost;
+    Node *root;
 };
 
 class RRT
@@ -47,7 +48,10 @@ public:
     Node *nearestNode;
     float nearestDistance;
     float NEIHOOD_SIZE;
-     void costBiasAndCheck(Node *q,double bias);
+     void costBiasAndCheck(Node *q,double bias);     
+     vector<Node *> nodes1,nodes2;
+     vector<Node *> path1,path2;
+     Node *root1, *lastNode1 ,*root2, *lastNode2;
 };
 
 #endif // RRT_H
