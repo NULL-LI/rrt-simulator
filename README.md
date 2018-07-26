@@ -1,5 +1,6 @@
 # RRT Simulator
 RRT-star algorithm : https://github.com/NULL-LI/rrt-simulator/tree/rrt_star
+
 informed-RRT-star  : https://github.com/NULL-LI/rrt-simulator/tree/informed_rrt_star
 
 ## Dependencies
