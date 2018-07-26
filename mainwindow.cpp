@@ -71,7 +71,7 @@ void MainWindow::on_startButton_clicked() {
     }
     ui->statusBox->setText(tr(str_tmp));
   }
-
+resetFlag=false;
 
 }
 

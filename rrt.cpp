@@ -77,7 +77,7 @@ shared_ptr<Node>RRT::getRandomNode() {
   if (reached()) {
     float minDistFound = nearestNode->cost;
     float distAdded = distance(point, startPos) + distance(point, endPos);
-          float startToEnd = distance(startPos, endPos);
+//          float startToEnd = distance(startPos, endPos);
     //      printf("minDistFound %f startToEnd %f\n", minDistFound,startToEnd);
     int cnt = 0;
     int cntMax = 1000;
