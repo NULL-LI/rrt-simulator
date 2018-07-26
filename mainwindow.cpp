@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
   renderArea = ui->renderArea;
   rrt = renderArea->rrt;
   simulated = false;
+  resetFlag=false;
 }
 
 /**
@@ -32,6 +33,10 @@ void MainWindow::on_startButton_clicked() {
   assert(rrt->max_iter > 0);
 
   for (int i = 0; i < renderArea->rrt->max_iter; i++) {
+      if(resetFlag)
+      {
+          break;
+      }
     do_rrt_connect();
     if(rrt->reached())
     {
@@ -50,6 +55,10 @@ void MainWindow::on_startButton_clicked() {
 
   rrt->restoreNodes();
   for (int i = 0; i < renderArea->rrt->max_iter; i++) {
+      if(resetFlag)
+      {
+          break;
+      }
     do_rrt_star();
     char str_tmp[100];
     float minDistFound = rrt->nearestNode->cost;
@@ -150,6 +159,7 @@ void MainWindow::do_rrt_star() {
  * @brief Delete all obstacles, nodes and paths from the simulator.
  */
 void MainWindow::on_resetButton_clicked() {
+    resetFlag=true;
   simulated = false;
   ui->statusBox->setText(tr(""));
   rrt->obstacles->obstacles.clear();

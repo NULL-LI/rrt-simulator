@@ -87,7 +87,7 @@ void RenderArea::drawNodes(QPainter &painter) {
   Vector2f pos;
 
   if (rrt->reached()) {
-      printf("RRT-STAR\n");
+    //      printf("RRT-STAR\n");
     for (int i = 0; i < (int)rrt->nodes.size(); i++) {
       for (int j = 0; j < (int)rrt->nodes[i]->children.size(); j++) {
         pos = rrt->nodes[i]->children[j]->position;
@@ -108,7 +108,7 @@ void RenderArea::drawNodes(QPainter &painter) {
       painter.drawLine(p1, p2);
     }
   } else {
-//      printf("RRT-STAR\n");
+    //      printf("RRT-STAR\n");
     for (int i = 0; i < (int)rrt->nodes1.size(); i++) {
       for (int j = 0; j < (int)rrt->nodes1[i]->children.size(); j++) {
         pos = rrt->nodes1[i]->children[j]->position;
@@ -150,6 +150,11 @@ void RenderArea::drawNodes(QPainter &painter) {
   }
   painter.restore();
 }
+
+void RenderArea::drawTree(shared_ptr<Node> root) {
+
+}
+
 
 void RenderArea::paintEvent(QPaintEvent *) {
   QPainter painter(this);

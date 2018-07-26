@@ -20,6 +20,7 @@ private:
     RenderArea *renderArea;
     RRT *rrt;
     bool simulated;
+    bool resetFlag;
 private slots:
     void on_startButton_clicked();
     void on_resetButton_clicked();

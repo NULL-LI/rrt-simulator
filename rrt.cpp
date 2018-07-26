@@ -87,7 +87,7 @@ shared_ptr<Node>RRT::getRandomNode() {
       point(1) = drand48() * WORLD_HEIGHT;
       distAdded = distance(point, startPos) + distance(point, endPos);
       // to be optimized
-          printf("minDist %f distAdded %f startToEnd %f\n", minDistFound,distAdded,startToEnd);
+//          printf("minDist %f distAdded %f startToEnd %f\n", minDistFound,distAdded,startToEnd);
     } while (minDistFound < distAdded /*&&cnt<cntMax*/);
     if (cnt == cntMax) {
       return NULL;
@@ -361,6 +361,7 @@ bool RRT::restoreNodes() {
       }
     }
     nearestNode=*(nodes.end()-1);
+    nearestDistance=distance(nearestNode->position, endPos);
     printf("nodes.size() %ld\n", nodes.size());
     printf("end %f\n", (*(nodes.end()-1))->cost);
     printf("begin %f\n", (*(nodes.begin()))->cost);
