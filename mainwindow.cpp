@@ -31,69 +31,120 @@ void MainWindow::on_startButton_clicked() {
   assert(rrt->step_size > 0);
   assert(rrt->max_iter > 0);
 
-  do_rrt();
+  for (int i = 0; i < renderArea->rrt->max_iter; i++) {
+    do_rrt_connect();
+    if(rrt->reached())
+    {
+        printf("Connected!");
+        break;
+    }
+    char str_tmp[100];
+    float minDistFound = rrt->nearestNode->cost;
+    float startToEnd = rrt->distance(rrt->startPos, rrt->endPos);
+    sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\n", i, minDistFound,
+            startToEnd);
+    if (rrt->reached()) {
+      sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\nReached!\n", i,
+              minDistFound, startToEnd);
+    }
+    ui->statusBox->setText(tr(str_tmp));
+  }
+  rrt->restoreNodes();
+  for (int i = 0; i < renderArea->rrt->max_iter; i++) {
+    do_rrt();
+    char str_tmp[100];
+    float minDistFound = rrt->nearestNode->cost;
+    float startToEnd = rrt->distance(rrt->startPos, rrt->endPos);
+    sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\n", i, minDistFound,
+            startToEnd);
+    if (rrt->reached()) {
+      sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\nReached!\n", i,
+              minDistFound, startToEnd);
+    }
+    ui->statusBox->setText(tr(str_tmp));
+  }
 
-  //  if (rrt->reached()) {
-  //    q = rrt->lastNode;
-  //  } else {
-  //    // if not reached yet, then shortestPath will start from the closest
-  //    node to
-  //    // end point.
-  //    q = rrt->nearest(rrt->endPos);
-  //    ui->statusBox->setText(tr("Exceeded max iterations!"));
-  //  }
-  // generate shortest path to destination.
-  // KeepLiveEnd
+
+}
+
+void MainWindow::do_rrt_connect() {
+    Node *q = rrt->getRandomNode();
+        if (q) {
+          Node *qNearest = rrt->nearest1(q->position);
+          if (rrt->distance(q->position, qNearest->position) > rrt->step_size) {
+            Vector2f newConfig = rrt->newConfig(q, qNearest);
+            if (!rrt->obstacles->isSegmentInObstacle(newConfig,
+                                                     qNearest->position)) {
+              Node *qNew = new Node;
+              qNew->position = newConfig;
+              rrt->addConnect(qNearest, qNew);
+            }
+          }
+          qNearest = rrt->nearest2(q->position);
+          if (rrt->distance(q->position, qNearest->position) > rrt->step_size) {
+            Vector2f newConfig = rrt->newConfig(q, qNearest);
+            if (!rrt->obstacles->isSegmentInObstacle(newConfig,
+                                                     qNearest->position)) {
+              Node *qNew = new Node;
+              qNew->position = newConfig;
+              rrt->addConnect(qNearest, qNew);
+            }
+          }
+        }
+
+        rrt->path1.clear();
+        rrt->path2.clear();
+        Node *q1, *q2;
+        /*if (rrt->reached())*/ {
+          q1 = rrt->lastNode1;
+          q2 = rrt->lastNode2;
+        }
+        while (q1 != NULL) {
+          rrt->path1.push_back(q1);
+          q1 = q1->parent;
+        }
+        while (q2 != NULL) {
+          rrt->path2.push_back(q2);
+          q2 = q2->parent;
+        }
+        renderArea->repaint();
+        QApplication::processEvents();
+
 }
 
 void MainWindow::do_rrt() {
   // RRT Algorithm
-  for (int i = 0; i < renderArea->rrt->max_iter; i++) {
-    Node *q = rrt->getRandomNode();
-    if (q) {
-      Node *qShortest = rrt->nearest(q->position);
-      if (rrt->distance(q->position, qShortest->position) > rrt->step_size) {
-        Vector2f newConfig = rrt->newConfig(q, qShortest);
-        if (!rrt->obstacles->isSegmentInObstacle(newConfig,
-                                                 qShortest->position)) {
-          Node *qNew = new Node;
-          qNew->position = newConfig;
-          rrt->add(qShortest, qNew);
+  Node *q = rrt->getRandomNode();
+  if (q) {
+    Node *qShortest = rrt->nearest(q->position);
+    if (rrt->distance(q->position, qShortest->position) > rrt->step_size) {
+      Vector2f newConfig = rrt->newConfig(q, qShortest);
+      if (!rrt->obstacles->isSegmentInObstacle(newConfig,
+                                               qShortest->position)) {
+        Node *qNew = new Node;
+        qNew->position = newConfig;
+        rrt->add(qShortest, qNew);
 
-          rrt->getNeighbors(rrt->lastNode);
-          rrt->optimizePath(rrt->lastNode /*,neighbors*/);
+        rrt->getNeighbors(rrt->lastNode);
+        rrt->optimizePath(rrt->lastNode /*,neighbors*/);
 
-          if (rrt->distance(qNew->position, rrt->endPos) <
-              rrt->nearestDistance) {
-            rrt->nearestDistance = rrt->distance(qNew->position, rrt->endPos);
-            rrt->nearestNode = qNew;
-          }
+        if (rrt->distance(qNew->position, rrt->endPos) < rrt->nearestDistance) {
+          rrt->nearestDistance = rrt->distance(qNew->position, rrt->endPos);
+          rrt->nearestNode = qNew;
         }
       }
-
-      q = rrt->nearestNode;
-      rrt->path.clear();
-
-      while (q != NULL) {
-        rrt->path.push_back(q);
-        q = q->parent;
-      }
-      renderArea->repaint();
-      char str_tmp[100];
-      float minDistFound = rrt->nearestNode->cost;
-      float startToEnd = rrt->distance(rrt->startPos, rrt->endPos);
-      sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\n", i, minDistFound,
-              startToEnd);
-      if (rrt->reached()) {
-        sprintf(str_tmp, "Iter %d \n F %.2f\n B %.2f\nReached!\n", i,
-                minDistFound, startToEnd);
-        //      ui->statusBox->setText(tr("Reached Destination!"));
-        //      break;
-      }
-
-      ui->statusBox->setText(tr(str_tmp));
-      QApplication::processEvents();
     }
+
+    q = rrt->nearestNode;
+    rrt->path.clear();
+
+    while (q != NULL) {
+      rrt->path.push_back(q);
+      q = q->parent;
+    }
+    renderArea->repaint();
+
+    QApplication::processEvents();
   }
 }
 
