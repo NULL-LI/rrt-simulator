@@ -68,7 +68,6 @@ void RRT::initialize() {
  * @return
  */
 shared_ptr<Node>RRT::getRandomNode() {
-  shared_ptr<Node>ret;
   Vector2f point(drand48() * WORLD_WIDTH, drand48() * WORLD_HEIGHT);
   if (drand48() > 0.9) {
     point = endPos;
@@ -98,7 +97,8 @@ shared_ptr<Node>RRT::getRandomNode() {
   //  printf("nearestNode->distance %f\n", nearestNode->distance);
   if (point.x() >= 0 && point.x() <= WORLD_WIDTH && point.y() >= 0 &&
       point.y() <= WORLD_HEIGHT) {
-    ret.reset(new Node);
+
+      shared_ptr<Node>ret=make_shared<Node>();
     ret->position = point;
     return ret;
   }
@@ -189,7 +189,7 @@ shared_ptr<Node>RRT::nearest2(Vector2f point) {
   return;
 }
 
-void RRT::costBiasAndCheck(shared_ptr<Node> q, double bias) {
+void RRT::costBiasAndCheck(shared_ptr<Node> q, float bias) {
   q->cost += bias;
   if (q->children.size() != 0) {
     auto it = q->children.begin();
@@ -225,7 +225,7 @@ void RRT::optimizePath(shared_ptr<Node>q /*,  vector<shared_ptr<Node>> neighbors
           ++it;
         }
       }
-      double biasCostQ = disti + neighborNodes[i]->cost - q->cost;
+      float biasCostQ = disti + neighborNodes[i]->cost - q->cost;
       costBiasAndCheck(q, biasCostQ);
       q->parent = neighborNodes[i];
       q->cost = disti + neighborNodes[i]->cost;
@@ -250,7 +250,7 @@ void RRT::optimizePath(shared_ptr<Node>q /*,  vector<shared_ptr<Node>> neighbors
               ++it;
             }
           }
-          double biasCostJ =
+          float biasCostJ =
               disti + distj + neighborNodes[i]->cost - neighborNodes[j]->cost;
           costBiasAndCheck(neighborNodes[j], biasCostJ);
           neighborNodes[j]->parent = q;

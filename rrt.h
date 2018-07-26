@@ -18,7 +18,7 @@ struct Node {
     vector<shared_ptr<Node>> children;
     shared_ptr<Node>parent;
     Vector2f position;
-    double cost;
+    float cost;
     shared_ptr<Node>root;
 };
 
@@ -54,7 +54,7 @@ public:
     shared_ptr<Node>nearestNode;
     float nearestDistance;
     float NEIHOOD_SIZE;
-     void costBiasAndCheck(shared_ptr<Node>q,double bias);
+     void costBiasAndCheck(shared_ptr<Node>q,float bias);
      vector<shared_ptr<Node>> nodes1,nodes2;
      vector<shared_ptr<Node>> path1,path2;
      shared_ptr<Node>root1, lastNode1 ,root2, lastNode2;
