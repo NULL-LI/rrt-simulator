@@ -2,10 +2,11 @@
 
 RRT::RRT() {
   obstacles = new Obstacles;
-  startPos.x() = START_POS_X;
-  startPos.y() = START_POS_Y;
-  endPos.x() = END_POS_X;
-  endPos.y() = END_POS_Y;
+
+  startPos[0] = START_POS_X;
+  startPos[1] = START_POS_Y;
+  endPos[0] = END_POS_X;
+  endPos[1] = END_POS_Y;
   reached_flag = false;
 
   root1 .reset(new Node);
@@ -32,6 +33,13 @@ RRT::RRT() {
   max_iter = 10000;
   nearestNode = root;
   nearestDistance = distance(root->position, endPos);
+
+  for(int i=0;i<SPACE_DIMENSION;i++)
+  {
+      space_range[i]=space_max_limit[i]-space_min_limit[i];
+  }
+
+
 }
 
 /**
@@ -68,10 +76,16 @@ void RRT::initialize() {
  * @return
  */
 shared_ptr<Node>RRT::getRandomNode() {
-  _type_position point=_type_position::Random();
-  for(int i=0;i<point.rows();i++)
+  _type_position point;//=_type_position::Identity();
+
+//  for(int i=0;i<point.rows();i++)
+//  {
+//printf("%f ",point[i]);
+//  }
+
+  for(int i=0;i<SPACE_DIMENSION;i++)
   {
-point[i]=point[i]*space_range[i]+space_min_limit[i];
+point[i]=drand48()*space_range[i]+space_min_limit[i];
   }
 
   if (drand48() > 0.95) {
@@ -339,23 +353,23 @@ bool RRT::reached() {
 
 bool RRT::restoreNodes() {
   if (reached()) {
-      printf("ready to restore!");
+      printf("ready to restore!\n");
     nodes.clear();
     shared_ptr<Node>q1, q2;
     q1 = lastNode1;
     q2 = lastNode2;
-    printf("nodes1!");
+//    printf("nodes1!");
     while (q1 != NULL) {
       nodes.insert(nodes.begin(), q1);
       q1 = q1->parent;
     }
-    printf("nodes1! %ld",nodes.size());
-    printf("nodes2!");
+//    printf("nodes1! %ld",nodes.size());
+//    printf("nodes2!");
     while (q2 != NULL) {
       nodes.push_back(q2);
       q2 = q2->parent;
     }
-    printf("nodes2! %ld",nodes.size());
+//    printf("nodes2! %ld",nodes.size());
     for (int i = 0; i < (int)nodes.size(); i++) {
       nodes[i]->children.clear();
       if (i == 0) {
@@ -368,6 +382,11 @@ bool RRT::restoreNodes() {
       if (i != (int)nodes.size() - 1) {
         nodes[i]->children.push_back(nodes[i+1]);
       }
+    }
+
+    for(int i=0;i<lastNode1->position.rows();i++)
+    {
+printf("%f ",lastNode1->position[i]);
     }
     root=*(nodes.begin());
     nearestNode=*(nodes.end()-1);

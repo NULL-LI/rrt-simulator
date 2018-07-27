@@ -16,7 +16,7 @@ using namespace Eigen;
 class Obstacles;
 //#define Random(x) (rand() % x)
 
-#define SPACE_DIMENSION 3
+#define SPACE_DIMENSION 9
 
 typedef Matrix<float,SPACE_DIMENSION,1> _type_position;
 
@@ -35,9 +35,9 @@ class RRT
 {
 public:
 
-    double space_max_limit[6]={WORLD_WIDTH,WORLD_HEIGHT,M_PI,M_PI,M_PI,M_PI};
-    double space_min_limit[6]={0,0,-M_PI,-M_PI,-M_PI,-M_PI};
-    double space_range[6]={WORLD_WIDTH,WORLD_HEIGHT,2*M_PI,2*M_PI,2*M_PI,2*M_PI};
+    float space_max_limit[10]={WORLD_WIDTH,WORLD_HEIGHT,M_PI,M_PI,M_PI,M_PI,M_PI,M_PI,M_PI,M_PI};
+    float space_min_limit[10]={0,0,-M_PI,-M_PI,-M_PI,-M_PI,-M_PI,-M_PI,-M_PI,-M_PI};
+    float space_range[10];//={WORLD_WIDTH,WORLD_HEIGHT,2*M_PI,2*M_PI,2*M_PI,2*M_PI};
 
     bool reached_flag;
     RRT();
