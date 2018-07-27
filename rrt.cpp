@@ -68,9 +68,16 @@ void RRT::initialize() {
  * @return
  */
 shared_ptr<Node>RRT::getRandomNode() {
-  Vector2f point(drand48() * WORLD_WIDTH, drand48() * WORLD_HEIGHT);
-  if (drand48() > 0.9) {
+  _type_position point=_type_position::Random();
+  for(int i=0;i<point.rows();i++)
+  {
+point[i]=point[i]*space_range[i]+space_min_limit[i];
+  }
+
+  if (drand48() > 0.95) {
     point = endPos;
+  }  else if (drand48() > 0.9) {
+      point = startPos;
   }
   // rrt star function
 
@@ -111,13 +118,13 @@ shared_ptr<Node>RRT::getRandomNode() {
  * @param q
  * @return
  */
-float RRT::distance(Vector2f &p, Vector2f &q) {
-  Vector2f v = p - q;
+float RRT::distance(_type_position &p, _type_position &q) {
+  _type_position v = p - q;
   return sqrt(powf(v.x(), 2) + powf(v.y(), 2));
 }
 
-float RRT::cost(Vector2f &p, shared_ptr<Node>q) {
-  Vector2f v = p - q->position;
+float RRT::cost(_type_position &p, shared_ptr<Node>q) {
+  _type_position v = p - q->position;
   return sqrt(powf(v.x(), 2) + powf(v.y(), 2)) + q->cost;
 }
 
@@ -126,7 +133,7 @@ float RRT::cost(Vector2f &p, shared_ptr<Node>q) {
  * @param point
  * @return
  */
-shared_ptr<Node>RRT::nearest(Vector2f point) {
+shared_ptr<Node>RRT::nearest(_type_position point) {
   float minDist = 1e9;
   shared_ptr<Node>closest = NULL;
   for (int i = 0; i < (int)nodes.size(); i++) {
@@ -139,7 +146,7 @@ shared_ptr<Node>RRT::nearest(Vector2f point) {
   return closest;
 }
 
-shared_ptr<Node>RRT::nearest1(Vector2f point) {
+shared_ptr<Node>RRT::nearest1(_type_position point) {
   float minDist = 1e9;
   shared_ptr<Node>closest = NULL;
   for (int i = 0; i < (int)nodes1.size(); i++) {
@@ -151,7 +158,7 @@ shared_ptr<Node>RRT::nearest1(Vector2f point) {
   }
   return closest;
 }
-shared_ptr<Node>RRT::nearest2(Vector2f point) {
+shared_ptr<Node>RRT::nearest2(_type_position point) {
   float minDist = 1e9;
   shared_ptr<Node>closest = NULL;
   for (int i = 0; i < (int)nodes2.size(); i++) {
@@ -164,7 +171,7 @@ shared_ptr<Node>RRT::nearest2(Vector2f point) {
   return closest;
 }
 
-// shared_ptr<Node>RRT::shortest(Vector2f point) {
+// shared_ptr<Node>RRT::shortest(_type_position point) {
 //  float minDist = 1e9;
 //  shared_ptr<Node>shortest = NULL;
 //  for (int i = 0; i < (int)nodes.size(); i++) {
@@ -271,12 +278,12 @@ void RRT::optimizePath(shared_ptr<Node>q /*,  vector<shared_ptr<Node>> neighbors
  * @param qNearest
  * @return
  */
-Vector2f RRT::newConfig(shared_ptr<Node>q, shared_ptr<Node>qNearest) {
-  Vector2f to = q->position;
-  Vector2f from = qNearest->position;
-  Vector2f intermediate = to - from;
+_type_position RRT::newConfig(shared_ptr<Node>q, shared_ptr<Node>qNearest) {
+  _type_position to = q->position;
+  _type_position from = qNearest->position;
+  _type_position intermediate = to - from;
   intermediate = intermediate / intermediate.norm();
-  Vector2f ret = from + step_size * intermediate;
+  _type_position ret = from + step_size * intermediate;
   return ret;
 }
 

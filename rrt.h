@@ -15,11 +15,14 @@ using namespace Eigen;
 
 //#define Random(x) (rand() % x)
 
-//template <class T>
+#define SPACE_DIMENSION 2
+
+typedef Matrix<float,SPACE_DIMENSION,1> _type_position;
+
 struct Node {
     vector<shared_ptr<Node>> children;
     shared_ptr<Node>parent;
-    Vector2f position;
+    _type_position position;
     float cost;
     shared_ptr<Node>root;
 };
@@ -27,17 +30,22 @@ struct Node {
 class RRT
 {
 public:
+
+    double space_max_limit[6]={WORLD_WIDTH,WORLD_HEIGHT,M_PI,M_PI,M_PI,M_PI};
+    double space_min_limit[6]={0,0,-M_PI,-M_PI,-M_PI,-M_PI};
+    double space_range[6]={WORLD_WIDTH,WORLD_HEIGHT,2*M_PI,2*M_PI,2*M_PI,2*M_PI};
+
     bool reached_flag;
     RRT();
     void initialize();
     shared_ptr<Node>getRandomNode();
-    shared_ptr<Node>nearest(Vector2f point);
-    shared_ptr<Node>nearest1(Vector2f point);
-    shared_ptr<Node>nearest2(Vector2f point);
-//    Node* shortest(Vector2f point);
-    float distance(Vector2f &p, Vector2f &q);
-    float cost(Vector2f &p, shared_ptr<Node>q) ;
-    Vector2f newConfig(shared_ptr<Node>q, shared_ptr<Node>qNearest);
+    shared_ptr<Node>nearest(_type_position point);
+    shared_ptr<Node>nearest1(_type_position point);
+    shared_ptr<Node>nearest2(_type_position point);
+//    Node* shortest(_type_position point);
+    float distance(_type_position &p, _type_position &q);
+    float cost(_type_position &p, shared_ptr<Node>q) ;
+    _type_position newConfig(shared_ptr<Node>q, shared_ptr<Node>qNearest);
     void add(shared_ptr<Node>qNearest, shared_ptr<Node>qNew);
     void addConnect(shared_ptr<Node>qNearest, shared_ptr<Node>qNew);
     bool reached();
@@ -48,7 +56,7 @@ public:
     vector<shared_ptr<Node>> nodes,neighborNodes;
     vector<shared_ptr<Node>> path;
     shared_ptr<Node>root, lastNode;
-    Vector2f startPos, endPos;
+    _type_position startPos, endPos;
     int max_iter;
     int step_size;    
     void getNeighbors(shared_ptr<Node>q);

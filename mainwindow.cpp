@@ -80,7 +80,7 @@ void MainWindow::do_rrt_connect() {
         if (q) {
           shared_ptr<Node>qNearest = rrt->nearest1(q->position);
           if (rrt->distance(q->position, qNearest->position) > rrt->step_size) {
-            Vector2f newConfig = rrt->newConfig(q, qNearest);
+            _type_position newConfig = rrt->newConfig(q, qNearest);
             if (!rrt->obstacles->isSegmentInObstacle(newConfig,
                                                      qNearest->position)) {
               shared_ptr<Node>qNew=make_shared<Node>();
@@ -90,7 +90,7 @@ void MainWindow::do_rrt_connect() {
           }
           qNearest = rrt->nearest2(q->position);
           if (rrt->distance(q->position, qNearest->position) > rrt->step_size) {
-            Vector2f newConfig = rrt->newConfig(q, qNearest);
+            _type_position newConfig = rrt->newConfig(q, qNearest);
             if (!rrt->obstacles->isSegmentInObstacle(newConfig,
                                                      qNearest->position)) {
               shared_ptr<Node>qNew=make_shared<Node>() ;
@@ -125,7 +125,7 @@ void MainWindow::do_rrt_star() {
   if (q) {
     shared_ptr<Node>qShortest = rrt->nearest(q->position);
     if (rrt->distance(q->position, qShortest->position) > rrt->step_size) {
-      Vector2f newConfig = rrt->newConfig(q, qShortest);
+      _type_position newConfig = rrt->newConfig(q, qShortest);
       if (!rrt->obstacles->isSegmentInObstacle(newConfig,
                                                qShortest->position)) {
         shared_ptr<Node>qNew=make_shared<Node>();
