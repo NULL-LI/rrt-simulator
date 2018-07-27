@@ -15,51 +15,51 @@ using namespace Eigen;
 
 //#define Random(x) (rand() % x)
 
-//template <class T>
+template <class T>
 struct Node {
-    vector<shared_ptr<Node>> children;
-    shared_ptr<Node>parent;
-    Vector2f position;
+    vector<shared_ptr<Node<T>>> children;
+    shared_ptr<Node<T>>parent;
+    T position;
     float cost;
-    shared_ptr<Node>root;
+    shared_ptr<Node<T>>root;
 };
-
+template <class T>
 class RRT
 {
 public:
     bool reached_flag;
     RRT();
     void initialize();
-    shared_ptr<Node>getRandomNode();
-    shared_ptr<Node>nearest(Vector2f point);
-    shared_ptr<Node>nearest1(Vector2f point);
-    shared_ptr<Node>nearest2(Vector2f point);
+    shared_ptr<Node<T>>getRandomNode();
+    shared_ptr<Node<T>>nearest(Vector2f point);
+    shared_ptr<Node<T>>nearest1(Vector2f point);
+    shared_ptr<Node<T>>nearest2(Vector2f point);
 //    Node* shortest(Vector2f point);
-    float distance(Vector2f &p, Vector2f &q);
-    float cost(Vector2f &p, shared_ptr<Node>q) ;
-    Vector2f newConfig(shared_ptr<Node>q, shared_ptr<Node>qNearest);
-    void add(shared_ptr<Node>qNearest, shared_ptr<Node>qNew);
-    void addConnect(shared_ptr<Node>qNearest, shared_ptr<Node>qNew);
+    float distance(T &p, T &q);
+    float cost(T &p, shared_ptr<Node<T>>q) ;
+    T newConfig(shared_ptr<Node<T>>q, shared_ptr<Node<T>>qNearest);
+    void add(shared_ptr<Node<T>>qNearest, shared_ptr<Node<T>>qNew);
+    void addConnect(shared_ptr<Node<T>>qNearest, shared_ptr<Node<T>>qNew);
     bool reached();
     void setStepSize(int step);
     void setMaxIterations(int iter);
-    void deleteNodes(shared_ptr<Node>root);
+    void deleteNodes(shared_ptr<Node<T>>root);
     Obstacles *obstacles;
-    vector<shared_ptr<Node>> nodes,neighborNodes;
-    vector<shared_ptr<Node>> path;
-    shared_ptr<Node>root, lastNode;
+    vector<shared_ptr<Node<T>>> nodes,neighborNodes;
+    vector<shared_ptr<Node<T>>> path;
+    shared_ptr<Node<T>>root, lastNode;
     Vector2f startPos, endPos;
     int max_iter;
     int step_size;    
-    void getNeighbors(shared_ptr<Node>q);
-    void optimizePath(shared_ptr<Node>q/*, vector<shared_ptr<Node>> neighbors*/) ;
-    shared_ptr<Node>nearestNode;
+    void getNeighbors(shared_ptr<Node<T>>q);
+    void optimizePath(shared_ptr<Node<T>>q/*, vector<shared_ptr<Node<T>>> neighbors*/) ;
+    shared_ptr<Node<T>>nearestNode;
     float nearestDistance;
     float NEIHOOD_SIZE;
-     void costBiasAndCheck(shared_ptr<Node>q,float bias);
-     vector<shared_ptr<Node>> nodes1,nodes2;
-     vector<shared_ptr<Node>> path1,path2;
-     shared_ptr<Node>root1, lastNode1 ,root2, lastNode2;
+     void costBiasAndCheck(shared_ptr<Node<T>>q,float bias);
+     vector<shared_ptr<Node<T>>> nodes1,nodes2;
+     vector<shared_ptr<Node<T>>> path1,path2;
+     shared_ptr<Node<T>>root1, lastNode1 ,root2, lastNode2;
      bool restoreNodes();
 };
 

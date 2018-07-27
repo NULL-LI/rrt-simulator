@@ -11,12 +11,17 @@
 #include <QPainter>
 #include <QRect>
 
+
+#include <eigen3/Eigen/Dense>
+
+using namespace Eigen;
+
 class RenderArea : public QWidget
 {
     Q_OBJECT
 public:
     RenderArea(QWidget *parent = 0);
-    RRT *rrt;
+    RRT<Vector2f> *rrt;
 protected:
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -27,7 +32,7 @@ protected:
     void drawEndPos(QPainter &event);
     void drawObstacles(QPainter &event);
     void drawNodes(QPainter &event);
-    void drawTree(QPainter &painter,shared_ptr<Node> root);
+    void drawTree(QPainter &painter,shared_ptr<Node<Vector2f>> root);
 private:
     bool scribbling;
     QPoint lastMouseClickedPoint;

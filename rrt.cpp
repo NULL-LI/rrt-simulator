@@ -67,8 +67,8 @@ void RRT::initialize() {
  * @brief Generate a random node in the field.
  * @return
  */
-shared_ptr<Node>RRT::getRandomNode() {
-  Vector2f point(drand48() * WORLD_WIDTH, drand48() * WORLD_HEIGHT);
+shared_ptr<Node<T> > RRT::getRandomNode() {
+  T point(drand48() * WORLD_WIDTH, drand48() * WORLD_HEIGHT);
   if (drand48() > 0.9) {
     point = endPos;
   }
@@ -98,7 +98,7 @@ shared_ptr<Node>RRT::getRandomNode() {
   if (point.x() >= 0 && point.x() <= WORLD_WIDTH && point.y() >= 0 &&
       point.y() <= WORLD_HEIGHT) {
 
-      shared_ptr<Node>ret=make_shared<Node>();
+      shared_ptr<Node<T>>ret=make_shared<Node<T>>();
     ret->position = point;
     return ret;
   }
@@ -111,13 +111,13 @@ shared_ptr<Node>RRT::getRandomNode() {
  * @param q
  * @return
  */
-float RRT::distance(Vector2f &p, Vector2f &q) {
-  Vector2f v = p - q;
+float RRT::distance(T &p, T &q) {
+  T v = p - q;
   return sqrt(powf(v.x(), 2) + powf(v.y(), 2));
 }
 
-float RRT::cost(Vector2f &p, shared_ptr<Node>q) {
-  Vector2f v = p - q->position;
+float RRT::cost(T &p, shared_ptr<Node<T> > q) {
+  T v = p - q->position;
   return sqrt(powf(v.x(), 2) + powf(v.y(), 2)) + q->cost;
 }
 
@@ -126,9 +126,9 @@ float RRT::cost(Vector2f &p, shared_ptr<Node>q) {
  * @param point
  * @return
  */
-shared_ptr<Node>RRT::nearest(Vector2f point) {
+shared_ptr<Node<T> > RRT::nearest(T point) {
   float minDist = 1e9;
-  shared_ptr<Node>closest = NULL;
+  shared_ptr<Node<T>>closest = NULL;
   for (int i = 0; i < (int)nodes.size(); i++) {
     float dist = distance(point, nodes[i]->position);
     if (dist < minDist) {
@@ -139,9 +139,9 @@ shared_ptr<Node>RRT::nearest(Vector2f point) {
   return closest;
 }
 
-shared_ptr<Node>RRT::nearest1(Vector2f point) {
+shared_ptr<Node<T>>RRT::nearest1(T point) {
   float minDist = 1e9;
-  shared_ptr<Node>closest = NULL;
+  shared_ptr<Node<T>>closest = NULL;
   for (int i = 0; i < (int)nodes1.size(); i++) {
     float dist = distance(point, nodes1[i]->position);
     if (dist < minDist) {
@@ -151,9 +151,9 @@ shared_ptr<Node>RRT::nearest1(Vector2f point) {
   }
   return closest;
 }
-shared_ptr<Node>RRT::nearest2(Vector2f point) {
+shared_ptr<Node<T> > RRT::nearest2(T point) {
   float minDist = 1e9;
-  shared_ptr<Node>closest = NULL;
+  shared_ptr<Node<T>>closest = NULL;
   for (int i = 0; i < (int)nodes2.size(); i++) {
     float dist = distance(point, nodes2[i]->position);
     if (dist < minDist) {
@@ -164,9 +164,9 @@ shared_ptr<Node>RRT::nearest2(Vector2f point) {
   return closest;
 }
 
-// shared_ptr<Node>RRT::shortest(Vector2f point) {
+// shared_ptr<Node<T>>RRT::shortest(T point) {
 //  float minDist = 1e9;
-//  shared_ptr<Node>shortest = NULL;
+//  shared_ptr<Node<T>>shortest = NULL;
 //  for (int i = 0; i < (int)nodes.size(); i++) {
 //    float dist = cost(point, nodes[i]);
 //    if (dist < minDist) {
@@ -177,8 +177,8 @@ shared_ptr<Node>RRT::nearest2(Vector2f point) {
 //  return shortest;
 //}
 
-/*vector<shared_ptr<Node>>*/ void RRT::getNeighbors(shared_ptr<Node>q) {
-  //  vector<shared_ptr<Node>> neighborNodes;
+/*vector<shared_ptr<Node<T>>>*/ void RRT::getNeighbors(shared_ptr<Node<T>>q) {
+  //  vector<shared_ptr<Node<T>>> neighborNodes;
   neighborNodes.clear();
   for (int i = 0; i < (int)nodes.size(); i++) {
     float dist = distance(q->position, nodes[i]->position);
@@ -189,7 +189,7 @@ shared_ptr<Node>RRT::nearest2(Vector2f point) {
   return;
 }
 
-void RRT::costBiasAndCheck(shared_ptr<Node> q, float bias) {
+void RRT::costBiasAndCheck(shared_ptr<Node<T>> q, float bias) {
   q->cost += bias;
   if (q->children.size() != 0) {
     auto it = q->children.begin();
@@ -208,11 +208,11 @@ void RRT::costBiasAndCheck(shared_ptr<Node> q, float bias) {
   return;
 }
 
-void RRT::optimizePath(shared_ptr<Node>q /*,  vector<shared_ptr<Node>> neighbors*/) {
+void RRT::optimizePath(shared_ptr<Node<T>>q /*,  vector<shared_ptr<Node<T>>> neighbors*/) {
   for (int i = 0; i < (int)neighborNodes.size(); i++) {
     float disti = distance(q->position, neighborNodes[i]->position);
     if (disti + neighborNodes[i]->cost < q->cost) {
-      vector<shared_ptr<Node>>::iterator it = q->parent->children.begin();
+      vector<shared_ptr<Node<T>>>::iterator it = q->parent->children.begin();
       for (; it != q->parent->children.end();) {
         if ((*it) == q) {
           //删除指定元素，返回指向删除元素的下一个元素的位置的迭代器
@@ -239,7 +239,7 @@ void RRT::optimizePath(shared_ptr<Node>q /*,  vector<shared_ptr<Node>> neighbors
         float distj = distance(q->position, neighborNodes[j]->position);
 
         if (disti + distj + neighborNodes[i]->cost < neighborNodes[j]->cost) {
-          vector<shared_ptr<Node>>::iterator it =
+          vector<shared_ptr<Node<T>>>::iterator it =
               neighborNodes[j]->parent->children.begin();
           for (; it != neighborNodes[j]->parent->children.end();) {
             if ((*it) == neighborNodes[j]) {
@@ -271,12 +271,12 @@ void RRT::optimizePath(shared_ptr<Node>q /*,  vector<shared_ptr<Node>> neighbors
  * @param qNearest
  * @return
  */
-Vector2f RRT::newConfig(shared_ptr<Node>q, shared_ptr<Node>qNearest) {
-  Vector2f to = q->position;
-  Vector2f from = qNearest->position;
-  Vector2f intermediate = to - from;
+T RRT::newConfig(shared_ptr<Node<T> > q, shared_ptr<Node<T> > qNearest) {
+  T to = q->position;
+  T from = qNearest->position;
+  T intermediate = to - from;
   intermediate = intermediate / intermediate.norm();
-  Vector2f ret = from + step_size * intermediate;
+  T ret = from + step_size * intermediate;
   return ret;
 }
 
@@ -285,7 +285,7 @@ Vector2f RRT::newConfig(shared_ptr<Node>q, shared_ptr<Node>qNearest) {
  * @param qNearest
  * @param qNew
  */
-void RRT::add(shared_ptr<Node>qNearest, shared_ptr<Node>qNew) {
+void RRT::add(shared_ptr<Node<T>>qNearest, shared_ptr<Node<T>>qNew) {
   qNew->parent = qNearest;
   qNew->cost = qNearest->cost + distance(qNew->position, qNearest->position);
   qNearest->children.push_back(qNew);
@@ -293,7 +293,7 @@ void RRT::add(shared_ptr<Node>qNearest, shared_ptr<Node>qNew) {
   lastNode = qNew;
 }
 
-void RRT::addConnect(shared_ptr<Node>qNearest, shared_ptr<Node>qNew) {
+void RRT::addConnect(shared_ptr<Node<T> > qNearest, shared_ptr<Node<T> > qNew) {
   qNew->parent = qNearest;
   qNearest->children.push_back(qNew);
   if (qNearest->root == root1) {
@@ -332,7 +332,7 @@ bool RRT::restoreNodes() {
   if (reached()) {
       printf("ready to restore!");
     nodes.clear();
-    shared_ptr<Node>q1, q2;
+    shared_ptr<Node<T>>q1, q2;
     q1 = lastNode1;
     q2 = lastNode2;
     printf("nodes1!");
@@ -388,7 +388,7 @@ void RRT::setMaxIterations(int iter) { max_iter = iter; }
  * @brief Delete all nodes using DFS technique.
  * @param root
  */
-void RRT::deleteNodes(shared_ptr<Node>root) {
+void RRT::deleteNodes(shared_ptr<Node<T>>root) {
   for (int i = 0; i < (int)root->children.size(); i++) {
     deleteNodes(root->children[i]);
   }

@@ -18,7 +18,7 @@ public:
 private:
     Ui::MainWindow *ui;
     RenderArea *renderArea;
-    RRT *rrt;
+    RRT<Vector2f> *rrt;
     bool simulated;
     bool resetFlag;
 private slots:

@@ -154,7 +154,7 @@ void RenderArea::drawNodes(QPainter &painter) {
   painter.restore();
 }
 
-void RenderArea::drawTree(QPainter &painter,shared_ptr<Node> root) {
+void RenderArea::drawTree(QPainter &painter, shared_ptr<Node<Vector2f> > root) {
 //    printf("draw tree\n");
     painter.setPen(Qt::lightGray);
     painter.setBrush(QBrush(Qt::lightGray));
