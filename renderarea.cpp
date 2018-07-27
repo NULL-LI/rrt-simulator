@@ -82,7 +82,7 @@ void RenderArea::drawObstacles(QPainter &painter) {
 void RenderArea::drawNodes(QPainter &painter) {
   painter.save();
   painter.setRenderHint(QPainter::Antialiasing);
-  Vector2f pos;
+  _type_position pos;
 
   if (rrt->reached()) {
       drawTree(painter,rrt->root);

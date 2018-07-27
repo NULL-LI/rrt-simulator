@@ -1,11 +1,11 @@
 #ifndef RRT_H
 #define RRT_H
 
-#include "obstacles.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <math.h>
+#include "constants.h"
 #include <boost/smart_ptr.hpp>
 #include <boost/make_shared.hpp>
 #include <eigen3/Eigen/Dense>
@@ -13,7 +13,7 @@
 
 using namespace std;
 using namespace Eigen;
-
+class Obstacles;
 //#define Random(x) (rand() % x)
 
 #define SPACE_DIMENSION 3
@@ -27,6 +27,9 @@ struct Node {
     float cost;
     shared_ptr<Node>root;
 };
+
+#include "obstacles.h"
+class Obstacles;
 
 class RRT
 {

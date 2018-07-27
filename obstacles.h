@@ -6,7 +6,6 @@
 #include <vector>
 #include <eigen3/Eigen/Dense>
 #include <assert.h>
-#include "constants.h"
 #include "rrt.h"
 
 using namespace Eigen;
