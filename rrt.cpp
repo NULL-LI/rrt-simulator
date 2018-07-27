@@ -120,12 +120,14 @@ point[i]=point[i]*space_range[i]+space_min_limit[i];
  */
 float RRT::distance(_type_position &p, _type_position &q) {
   _type_position v = p - q;
-  return sqrt(powf(v.x(), 2) + powf(v.y(), 2));
+  return v.norm();
+//  return sqrt(powf(v.x(), 2) + powf(v.y(), 2));
 }
 
 float RRT::cost(_type_position &p, shared_ptr<Node>q) {
   _type_position v = p - q->position;
-  return sqrt(powf(v.x(), 2) + powf(v.y(), 2)) + q->cost;
+//  return sqrt(powf(v.x(), 2) + powf(v.y(), 2)) + q->cost;
+  return v.norm() + q->cost;
 }
 
 /**

@@ -65,10 +65,10 @@ void RenderArea::drawObstacles(QPainter &painter) {
   pair<Vector2f, Vector2f> obstacle;
   for (int i = 0; i < (int)rrt->obstacles->obstacles.size(); i++) {
     obstacle = rrt->obstacles->obstacles[i];
-    QPoint topLeft(obstacle.first.x() + BOT_CLEARANCE,
-                   obstacle.first.y() + BOT_CLEARANCE);
-    QPoint bottomRight(obstacle.second.x() - BOT_CLEARANCE,
-                       obstacle.second.y() - BOT_CLEARANCE);
+    QPoint topLeft(obstacle.first[0] + BOT_CLEARANCE,
+                   obstacle.first[1] + BOT_CLEARANCE);
+    QPoint bottomRight(obstacle.second[0] - BOT_CLEARANCE,
+                       obstacle.second[1] - BOT_CLEARANCE);
     QRect rect(topLeft, bottomRight);
     painter.drawRect(rect);
   }
@@ -92,10 +92,10 @@ void RenderArea::drawNodes(QPainter &painter) {
     for (int i = 0; i < (int)rrt->nodes.size(); i++) {
       for (int j = 0; j < (int)rrt->nodes[i]->children.size(); j++) {
         pos = rrt->nodes[i]->children[j]->position;
-        painter.drawEllipse(pos.x() - 1.5, pos.y() - 1.5, 3, 3);
+        painter.drawEllipse(pos[0] - 1.5, pos[1] - 1.5, 3, 3);
       }
       pos = rrt->nodes[i]->position;
-      painter.drawEllipse(pos.x() - NODE_RADIUS, pos.y() - NODE_RADIUS,
+      painter.drawEllipse(pos[0] - NODE_RADIUS, pos[1] - NODE_RADIUS,
                           2 * NODE_RADIUS, 2 * NODE_RADIUS);
     }
     painter.setPen(Qt::red);
@@ -103,9 +103,9 @@ void RenderArea::drawNodes(QPainter &painter) {
 
     // if a path exists, draw it.
     for (int i = 0; i < (int)rrt->path.size() - 1; i++) {
-      QPointF p1(rrt->path[i]->position.x(), rrt->path[i]->position.y());
-      QPointF p2(rrt->path[i + 1]->position.x(),
-                 rrt->path[i + 1]->position.y());
+      QPointF p1(rrt->path[i]->position[0], rrt->path[i]->position[1]);
+      QPointF p2(rrt->path[i + 1]->position[0],
+                 rrt->path[i + 1]->position[1]);
       painter.drawLine(p1, p2);
     }
   } else {
@@ -115,39 +115,39 @@ void RenderArea::drawNodes(QPainter &painter) {
     for (int i = 0; i < (int)rrt->nodes1.size(); i++) {
       for (int j = 0; j < (int)rrt->nodes1[i]->children.size(); j++) {
         pos = rrt->nodes1[i]->children[j]->position;
-        painter.drawEllipse(pos.x() - 1.5, pos.y() - 1.5, 3, 3);
+        painter.drawEllipse(pos[0] - 1.5, pos[1] - 1.5, 3, 3);
       }
       pos = rrt->nodes1[i]->position;
-      painter.drawEllipse(pos.x() - NODE_RADIUS, pos.y() - NODE_RADIUS,
+      painter.drawEllipse(pos[0] - NODE_RADIUS, pos[1] - NODE_RADIUS,
                           2 * NODE_RADIUS, 2 * NODE_RADIUS);
     }
     for (int i = 0; i < (int)rrt->nodes2.size(); i++) {
       for (int j = 0; j < (int)rrt->nodes2[i]->children.size(); j++) {
         pos = rrt->nodes2[i]->children[j]->position;
-        painter.drawEllipse(pos.x() - 1.5, pos.y() - 1.5, 3, 3);
+        painter.drawEllipse(pos[0] - 1.5, pos[1] - 1.5, 3, 3);
       }
       pos = rrt->nodes2[i]->position;
-      painter.drawEllipse(pos.x() - NODE_RADIUS, pos.y() - NODE_RADIUS,
+      painter.drawEllipse(pos[0] - NODE_RADIUS, pos[1] - NODE_RADIUS,
                           2 * NODE_RADIUS, 2 * NODE_RADIUS);
     }
     painter.setPen(Qt::red);
     painter.setBrush(QBrush(Qt::red));
     // if a path exists, draw it.
     for (int i = 0; i < (int)rrt->path1.size() - 1; i++) {
-      QPointF p1(rrt->path1[i]->position.x(), rrt->path1[i]->position.y());
-      QPointF p2(rrt->path1[i + 1]->position.x(),
-                 rrt->path1[i + 1]->position.y());
+      QPointF p1(rrt->path1[i]->position[0], rrt->path1[i]->position[1]);
+      QPointF p2(rrt->path1[i + 1]->position[0],
+                 rrt->path1[i + 1]->position[1]);
       //        printf("%lf,%lf  %lf,%lf
-      //        \n",rrt->path1[i]->position.x(),rrt->path1[i]->position.y(),rrt->path1[i+1]->position.x(),rrt->path1[i+1]->position.y());
+      //        \n",rrt->path1[i]->position[0],rrt->path1[i]->position[1],rrt->path1[i+1]->position[0],rrt->path1[i+1]->position[1]);
       painter.drawLine(p1, p2);
     }
     painter.setPen(Qt::blue);
     painter.setBrush(QBrush(Qt::blue));
     // if a path exists, draw it.
     for (int i = 0; i < (int)rrt->path2.size() - 1; i++) {
-      QPointF p1(rrt->path2[i]->position.x(), rrt->path2[i]->position.y());
-      QPointF p2(rrt->path2[i + 1]->position.x(),
-                 rrt->path2[i + 1]->position.y());
+      QPointF p1(rrt->path2[i]->position[0], rrt->path2[i]->position[1]);
+      QPointF p2(rrt->path2[i + 1]->position[0],
+                 rrt->path2[i + 1]->position[1]);
       painter.drawLine(p1, p2);
     }
   }
@@ -164,8 +164,8 @@ void RenderArea::drawTree(QPainter &painter,shared_ptr<Node> root) {
     }else {
         for(auto iter=root->children.begin();iter!=root->children.end();iter++)
         {
-    QPointF p1(root->position.x(),root->position.y());
-    QPointF p2((*iter)->position.x(),(*iter)->position.y());
+    QPointF p1(root->position[0],root->position[1]);
+    QPointF p2((*iter)->position[0],(*iter)->position[1]);
 painter.drawLine(p1, p2);
 drawTree(painter,(*iter));
         }

@@ -39,9 +39,9 @@ void Obstacles::addObstacle(Vector2f firstPoint, Vector2f secondPoint)
  * @param p2
  * @return
  */
-bool Obstacles::isSegmentInObstacle(Vector2f &p1, Vector2f &p2)
+bool Obstacles::isSegmentInObstacle(_type_position &p1, _type_position &p2)
 {
-    QLineF lineSegment(p1.x(), p1.y(), p2.x(), p2.y());
+    QLineF lineSegment(p1[0], p1[1], p2[0], p2[1]);
     QPointF *intersectPt = new QPointF;
     for(int i = 0; i < (int)obstacles.size(); i++) {
         float length = obstacles[i].second.x() - obstacles[i].first.x();

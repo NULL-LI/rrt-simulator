@@ -3,11 +3,12 @@
 
 #include "obstacles.h"
 #include <stdlib.h>
-#include<stdio.h>
+#include <stdio.h>
 #include <vector>
 #include <math.h>
 #include <boost/smart_ptr.hpp>
 #include <boost/make_shared.hpp>
+#include <eigen3/Eigen/Dense>
 // #include <typeinfo.h>
 
 using namespace std;
@@ -15,7 +16,7 @@ using namespace Eigen;
 
 //#define Random(x) (rand() % x)
 
-#define SPACE_DIMENSION 2
+#define SPACE_DIMENSION 3
 
 typedef Matrix<float,SPACE_DIMENSION,1> _type_position;
 
