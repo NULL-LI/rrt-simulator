@@ -8,12 +8,14 @@
 #include <math.h>
 #include <boost/smart_ptr.hpp>
 #include <boost/make_shared.hpp>
+// #include <typeinfo.h>
 
 using namespace std;
 using namespace Eigen;
 
 //#define Random(x) (rand() % x)
 
+//template <class T>
 struct Node {
     vector<shared_ptr<Node>> children;
     shared_ptr<Node>parent;
