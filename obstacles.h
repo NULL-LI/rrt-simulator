@@ -17,6 +17,9 @@ public:
     Obstacles();
     void addObstacle(Vector2f firstPoint, Vector2f secondPoint);
     bool isSegmentInObstacle(_type_position &p1, _type_position &p2);
+
+    bool (*isSegmentInObstacleCustom)(_type_position &p1, _type_position &p2);
+
     vector<pair<Vector2f, Vector2f> > obstacles;
 };
 

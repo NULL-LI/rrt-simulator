@@ -73,6 +73,7 @@ public:
      vector<shared_ptr<Node>> path1,path2;
      shared_ptr<Node>root1, lastNode1 ,root2, lastNode2;
      bool restoreNodes();
+     void do_rrt_connect();
 };
 
 #endif // RRT_H

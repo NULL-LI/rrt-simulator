@@ -51,6 +51,8 @@ void MainWindow::on_startButton_clicked() {
     sprintf(str_tmp, "Iter %d \n B %.2f\n", i,
             startToEnd);
     ui->statusBox->setText(tr(str_tmp));
+
+    QApplication::processEvents();
   }
 
   rrt->restoreNodes();
@@ -70,6 +72,8 @@ void MainWindow::on_startButton_clicked() {
               minDistFound, startToEnd);
     }
     ui->statusBox->setText(tr(str_tmp));
+
+    QApplication::processEvents();
   }
 resetFlag=false;
 
@@ -115,8 +119,6 @@ void MainWindow::do_rrt_connect() {
           rrt->path2.push_back(q2);
           q2 = q2->parent;
         }
-        QApplication::processEvents();
-
 }
 
 void MainWindow::do_rrt_star() {
@@ -151,7 +153,6 @@ void MainWindow::do_rrt_star() {
     }
     renderArea->repaint();
 
-    QApplication::processEvents();
   }
 }
 
