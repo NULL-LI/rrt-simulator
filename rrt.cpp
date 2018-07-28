@@ -2,7 +2,7 @@
 
 RRT::RRT() {
   obstacles = new Obstacles;
-
+//obstacles->isSegmentInObstacleCustom=Obstacles::isSegmentInObstacle;
   startPos=_type_position::Zero();
   endPos=_type_position::Zero();
 
