@@ -3,18 +3,23 @@
 RRT::RRT() {
   obstacles = new Obstacles;
 
+  startPos=_type_position::Zero();
+  endPos=_type_position::Zero();
+
   startPos[0] = START_POS_X;
   startPos[1] = START_POS_Y;
   endPos[0] = END_POS_X;
   endPos[1] = END_POS_Y;
   reached_flag = false;
-
+printf("root1\n");
   root1 .reset(new Node);
   root1->parent = NULL;
   root1->position = startPos;
   root1->root = root1;
   nodes1.push_back(root1);
   lastNode1 = root1;
+
+  printf("root2\n");
   root2.reset(new Node);
   root2->parent = NULL;
   root2->position = endPos;
@@ -22,6 +27,7 @@ RRT::RRT() {
   nodes2.push_back(root2);
   lastNode2 = root2;
 
+  printf("root\n");
   root .reset(new Node);
   root->parent = NULL;
   root->position = startPos;
@@ -34,11 +40,13 @@ RRT::RRT() {
   nearestNode = root;
   nearestDistance = distance(root->position, endPos);
 
+  printf("set space range\n");
   for(int i=0;i<SPACE_DIMENSION;i++)
   {
       space_range[i]=space_max_limit[i]-space_min_limit[i];
   }
 
+  printf("rrt init fin\n");
 
 }
 
@@ -76,14 +84,14 @@ void RRT::initialize() {
  * @return
  */
 shared_ptr<Node>RRT::getRandomNode() {
-  _type_position point;//=_type_position::Identity();
+  _type_position point=_type_position::Identity();
 
 //  for(int i=0;i<point.rows();i++)
 //  {
 //printf("%f ",point[i]);
 //  }
 
-  for(int i=0;i<SPACE_DIMENSION;i++)
+  for(int i=0;i<point.rows();i++)
   {
 point[i]=drand48()*space_range[i]+space_min_limit[i];
   }
@@ -119,7 +127,7 @@ point[i]=drand48()*space_range[i]+space_min_limit[i];
   if (point.x() >= 0 && point.x() <= WORLD_WIDTH && point.y() >= 0 &&
       point.y() <= WORLD_HEIGHT) {
 
-      shared_ptr<Node>ret=make_shared<Node>();
+      shared_ptr<Node>ret=shared_ptr<Node>(new Node);
     ret->position = point;
     return ret;
   }
@@ -134,6 +142,18 @@ point[i]=drand48()*space_range[i]+space_min_limit[i];
  */
 float RRT::distance(_type_position &p, _type_position &q) {
   _type_position v = p - q;
+//    float sum_pow=0;
+
+////    printf("compute distance\n");
+
+//    for(int i=0;i<p.rows();i++)
+//    {
+////        printf("%f %f \n",p[i],q[i]);
+//        sum_pow+=pow(p[i]-q[i],2);
+//    }
+
+//    return sqrt(sum_pow);
+
   return v.norm();
 //  return sqrt(powf(v.x(), 2) + powf(v.y(), 2));
 }
@@ -200,7 +220,8 @@ shared_ptr<Node>RRT::nearest2(_type_position point) {
 //  return shortest;
 //}
 
-/*vector<shared_ptr<Node>>*/ void RRT::getNeighbors(shared_ptr<Node>q) {
+/*vector<shared_ptr<Node>>*/
+void RRT::getNeighbors(shared_ptr<Node>q) {
   //  vector<shared_ptr<Node>> neighborNodes;
   neighborNodes.clear();
   for (int i = 0; i < (int)nodes.size(); i++) {

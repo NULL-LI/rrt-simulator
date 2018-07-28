@@ -78,24 +78,24 @@ resetFlag=false;
 void MainWindow::do_rrt_connect() {
     shared_ptr<Node>q = rrt->getRandomNode();
         if (q) {
-          shared_ptr<Node>qNearest = rrt->nearest1(q->position);
-          if (rrt->distance(q->position, qNearest->position) > rrt->step_size) {
-            _type_position newConfig = rrt->newConfig(q, qNearest);
+          shared_ptr<Node>qNearest1 = rrt->nearest1(q->position);
+          if (rrt->distance(q->position, qNearest1->position) > rrt->step_size) {
+            _type_position newConfig = rrt->newConfig(q, qNearest1);
             if (!rrt->obstacles->isSegmentInObstacle(newConfig,
-                                                     qNearest->position)) {
-              shared_ptr<Node>qNew=make_shared<Node>();
+                                                     qNearest1->position)) {
+              shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
               qNew->position = newConfig;
-              rrt->addConnect(qNearest, qNew);
+              rrt->addConnect(qNearest1, qNew);
             }
           }
-          qNearest = rrt->nearest2(q->position);
-          if (rrt->distance(q->position, qNearest->position) > rrt->step_size) {
-            _type_position newConfig = rrt->newConfig(q, qNearest);
+          shared_ptr<Node>qNearest2 = rrt->nearest2(q->position);
+          if (rrt->distance(q->position, qNearest2->position) > rrt->step_size) {
+            _type_position newConfig = rrt->newConfig(q, qNearest2);
             if (!rrt->obstacles->isSegmentInObstacle(newConfig,
-                                                     qNearest->position)) {
-              shared_ptr<Node>qNew=make_shared<Node>() ;
+                                                     qNearest2->position)) {
+              shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
               qNew->position = newConfig;
-              rrt->addConnect(qNearest, qNew);
+              rrt->addConnect(qNearest2, qNew);
             }
           }
         }
@@ -128,7 +128,7 @@ void MainWindow::do_rrt_star() {
       _type_position newConfig = rrt->newConfig(q, qShortest);
       if (!rrt->obstacles->isSegmentInObstacle(newConfig,
                                                qShortest->position)) {
-        shared_ptr<Node>qNew=make_shared<Node>();
+        shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
         qNew->position = newConfig;
         rrt->add(qShortest, qNew);
 
