@@ -2,7 +2,8 @@
 
 RRT::RRT() {
   obstacles = new Obstacles;
-//obstacles->isSegmentInObstacleCustom=Obstacles::isSegmentInObstacle;
+//  obstacles->isSegmentInObstacleCustom=&Obstacles::isSegmentInObstacle;
+//  obstacles->isSegmentInObstacleCustom=&Obstacles::isSegmentInObstacle;
   startPos=_type_position::Zero();
   endPos=_type_position::Zero();
 
@@ -447,44 +448,79 @@ void RRT::deleteNodes(shared_ptr<Node>root) {
 
 
 void RRT::do_rrt_connect() {
-//    shared_ptr<Node>q = getRandomNode();
-//        if (q) {
-//          shared_ptr<Node>qNearest1 = nearest1(q->position);
-//          if (distance(q->position, qNearest1->position) > step_size) {
-//            _type_position newConfig = newConfig(q, qNearest1);
-//            if (!obstacles->isSegmentInObstacle(newConfig,
-//                                                     qNearest1->position)) {
-//              shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
-//              qNew->position = newConfig;
-//              addConnect(qNearest1, qNew);
-//            }
-//          }
-//          shared_ptr<Node>qNearest2 = nearest2(q->position);
-//          if (distance(q->position, qNearest2->position) > step_size) {
-//            _type_position newConfig = newConfig(q, qNearest2);
-//            if (!obstacles->isSegmentInObstacle(newConfig,
-//                                                     qNearest2->position)) {
-//              shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
-//              qNew->position = newConfig;
-//              addConnect(qNearest2, qNew);
-//            }
-//          }
-//        }
+    shared_ptr<Node>q = getRandomNode();
+        if (q) {
+          shared_ptr<Node>qNearest1 = nearest1(q->position);
+          if (distance(q->position, qNearest1->position) > step_size) {
+            _type_position newConfigTemp = newConfig(q, qNearest1);
+            if (!obstacles->isSegmentInObstacle(newConfigTemp,
+                                                     qNearest1->position)) {
+              shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
+              qNew->position = newConfigTemp;
+              addConnect(qNearest1, qNew);
+            }
+          }
+          shared_ptr<Node>qNearest2 = nearest2(q->position);
+          if (distance(q->position, qNearest2->position) > step_size) {
+            _type_position newConfigTemp = newConfig(q, qNearest2);
+            if (!obstacles->isSegmentInObstacle(newConfigTemp,
+                                                     qNearest2->position)) {
+              shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
+              qNew->position = newConfigTemp;
+              addConnect(qNearest2, qNew);
+            }
+          }
+        }
 
-//        path1.clear();
-//        path2.clear();
-//        shared_ptr<Node>q1, q2;
-//        /*if (reached())*/ {
-//          q1 = lastNode1;
-//          q2 = lastNode2;
-//        }
-//        while (q1 != NULL) {
-//          path1.push_back(q1);
-//          q1 = q1->parent;
-//        }
-//        while (q2 != NULL) {
-//          path2.push_back(q2);
-//          q2 = q2->parent;
-//        }
+        path1.clear();
+        path2.clear();
+        shared_ptr<Node>q1, q2;
+        /*if (reached())*/ {
+          q1 = lastNode1;
+          q2 = lastNode2;
+        }
+        while (q1 != NULL) {
+          path1.push_back(q1);
+          q1 = q1->parent;
+        }
+        while (q2 != NULL) {
+          path2.push_back(q2);
+          q2 = q2->parent;
+        }
+}
+
+
+void RRT::do_rrt_star() {
+  // RRT Algorithm
+  shared_ptr<Node>q = getRandomNode();
+  if (q) {
+    shared_ptr<Node>qShortest = nearest(q->position);
+    if (distance(q->position, qShortest->position) > step_size) {
+      _type_position newConfigTemp = newConfig(q, qShortest);
+      if (!obstacles->isSegmentInObstacle(newConfigTemp,
+                                               qShortest->position)) {
+        shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
+        qNew->position = newConfigTemp;
+        add(qShortest, qNew);
+
+        getNeighbors(lastNode);
+        optimizePath(lastNode /*,neighbors*/);
+
+        if (distance(qNew->position, endPos) < nearestDistance) {
+          nearestDistance = distance(qNew->position, endPos);
+          nearestNode = qNew;
+        }
+      }
+    }
+
+    q = nearestNode;
+    path.clear();
+
+    while (q != NULL) {
+      path.push_back(q);
+      q = q->parent;
+    }
+
+  }
 }
 

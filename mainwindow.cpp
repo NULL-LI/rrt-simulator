@@ -37,14 +37,15 @@ void MainWindow::on_startButton_clicked() {
       {
           break;
       }
-    do_rrt_connect();
+    rrt->do_rrt_connect();
     if(rrt->reached())
     {
         printf("Connected!\n");
         break;
     }
-
     renderArea->repaint();
+    QApplication::processEvents();
+
     char str_tmp[100];
 //    float minDistFound = rrt->nearestNode->cost;
     float startToEnd = rrt->distance(rrt->startPos, rrt->endPos);
@@ -52,7 +53,6 @@ void MainWindow::on_startButton_clicked() {
             startToEnd);
     ui->statusBox->setText(tr(str_tmp));
 
-    QApplication::processEvents();
   }
 
   rrt->restoreNodes();
@@ -61,7 +61,10 @@ void MainWindow::on_startButton_clicked() {
       {
           break;
       }
-    do_rrt_star();
+    rrt->do_rrt_star();
+    renderArea->repaint();
+    QApplication::processEvents();
+
     char str_tmp[100];
     float minDistFound = rrt->nearestNode->cost;
     float startToEnd = rrt->distance(rrt->startPos, rrt->endPos);
@@ -73,87 +76,9 @@ void MainWindow::on_startButton_clicked() {
     }
     ui->statusBox->setText(tr(str_tmp));
 
-    QApplication::processEvents();
   }
 resetFlag=false;
 
-}
-
-void MainWindow::do_rrt_connect() {
-    shared_ptr<Node>q = rrt->getRandomNode();
-        if (q) {
-          shared_ptr<Node>qNearest1 = rrt->nearest1(q->position);
-          if (rrt->distance(q->position, qNearest1->position) > rrt->step_size) {
-            _type_position newConfig = rrt->newConfig(q, qNearest1);
-            if (!rrt->obstacles->isSegmentInObstacleCustom(newConfig,
-                                                     qNearest1->position)) {
-              shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
-              qNew->position = newConfig;
-              rrt->addConnect(qNearest1, qNew);
-            }
-          }
-          shared_ptr<Node>qNearest2 = rrt->nearest2(q->position);
-          if (rrt->distance(q->position, qNearest2->position) > rrt->step_size) {
-            _type_position newConfig = rrt->newConfig(q, qNearest2);
-            if (!rrt->obstacles->isSegmentInObstacleCustom(newConfig,
-                                                     qNearest2->position)) {
-              shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
-              qNew->position = newConfig;
-              rrt->addConnect(qNearest2, qNew);
-            }
-          }
-        }
-
-        rrt->path1.clear();
-        rrt->path2.clear();
-        shared_ptr<Node>q1, q2;
-        /*if (rrt->reached())*/ {
-          q1 = rrt->lastNode1;
-          q2 = rrt->lastNode2;
-        }
-        while (q1 != NULL) {
-          rrt->path1.push_back(q1);
-          q1 = q1->parent;
-        }
-        while (q2 != NULL) {
-          rrt->path2.push_back(q2);
-          q2 = q2->parent;
-        }
-}
-
-void MainWindow::do_rrt_star() {
-  // RRT Algorithm
-  shared_ptr<Node>q = rrt->getRandomNode();
-  if (q) {
-    shared_ptr<Node>qShortest = rrt->nearest(q->position);
-    if (rrt->distance(q->position, qShortest->position) > rrt->step_size) {
-      _type_position newConfig = rrt->newConfig(q, qShortest);
-      if (!rrt->obstacles->isSegmentInObstacleCustom(newConfig,
-                                               qShortest->position)) {
-        shared_ptr<Node>qNew=shared_ptr<Node>(new Node);
-        qNew->position = newConfig;
-        rrt->add(qShortest, qNew);
-
-        rrt->getNeighbors(rrt->lastNode);
-        rrt->optimizePath(rrt->lastNode /*,neighbors*/);
-
-        if (rrt->distance(qNew->position, rrt->endPos) < rrt->nearestDistance) {
-          rrt->nearestDistance = rrt->distance(qNew->position, rrt->endPos);
-          rrt->nearestNode = qNew;
-        }
-      }
-    }
-
-    q = rrt->nearestNode;
-    rrt->path.clear();
-
-    while (q != NULL) {
-      rrt->path.push_back(q);
-      q = q->parent;
-    }
-    renderArea->repaint();
-
-  }
 }
 
 /**
