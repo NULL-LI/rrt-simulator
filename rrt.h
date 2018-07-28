@@ -75,6 +75,9 @@ public:
      bool restoreNodes();
      void do_rrt_connect();
      void do_rrt_star();
+
+
+     void clearAll();
 };
 
 #endif // RRT_H

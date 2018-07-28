@@ -524,3 +524,24 @@ void RRT::do_rrt_star() {
   }
 }
 
+
+void RRT::clearAll()
+{
+    obstacles->obstacles.clear();
+    obstacles->obstacles.resize(0);
+    deleteNodes(root);
+    deleteNodes(root1);
+    deleteNodes(root2);
+    nodes.clear();
+    nodes.resize(0);
+    path.clear();
+    path.resize(0);
+    nodes1.clear();
+    nodes1.resize(0);
+    path1.clear();
+    path1.resize(0);
+    nodes2.clear();
+    nodes2.resize(0);
+    path2.clear();
+    path2.resize(0);
+}

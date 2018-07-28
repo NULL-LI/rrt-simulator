@@ -88,23 +88,7 @@ void MainWindow::on_resetButton_clicked() {
     resetFlag=true;
   simulated = false;
   ui->statusBox->setText(tr(""));
-  rrt->obstacles->obstacles.clear();
-  rrt->obstacles->obstacles.resize(0);
-  rrt->deleteNodes(rrt->root);
-  rrt->deleteNodes(rrt->root1);
-  rrt->deleteNodes(rrt->root2);
-  rrt->nodes.clear();
-  rrt->nodes.resize(0);
-  rrt->path.clear();
-  rrt->path.resize(0);
-  rrt->nodes1.clear();
-  rrt->nodes1.resize(0);
-  rrt->path1.clear();
-  rrt->path1.resize(0);
-  rrt->nodes2.clear();
-  rrt->nodes2.resize(0);
-  rrt->path2.clear();
-  rrt->path2.resize(0);
+rrt->clearAll();
   rrt->initialize();
   renderArea->update();
 }
