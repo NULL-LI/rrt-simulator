@@ -1,16 +1,24 @@
 #include "rrt.h"
 
-RRT::RRT() {
-//  obstacles = new Obstacles;
+RRT::RRT(_type_position startPosFo, _type_position endPosFo, int maxIterFo,
+         float endDistThreshold, float stepSizeFo, float neiHoodSizeFo,
+         _type_position space_max_limit_fo, _type_position space_min_limit_fo) {
+  //  obstacles = new Obstacles;
   //  obstacles->isSegmentInObstacleCustom=&Obstacles::isSegmentInObstacle;
   //  obstacles->isSegmentInObstacleCustom=&Obstacles::isSegmentInObstacle;
   startPos = _type_position::Zero();
   endPos = _type_position::Zero();
+  space_max_limit = space_max_limit_fo;
+  space_min_limit = space_min_limit_fo;
 
-  startPos[0] = START_POS_X;
-  startPos[1] = START_POS_Y;
-  endPos[0] = END_POS_X;
-  endPos[1] = END_POS_Y;
+  //  startPos[0] = START_POS_X;
+  //  startPos[1] = START_POS_Y;
+  //  endPos[0] = END_POS_X;
+  //  endPos[1] = END_POS_Y;
+
+  startPos = startPosFo;
+  endPos = endPosFo;
+
   reached_flag = false;
   printf("root1\n");
   root1.reset(new Node);
@@ -36,8 +44,12 @@ RRT::RRT() {
   lastNode = root;
   nodes.push_back(root);
 
-  step_size = 5;
-  max_iter = 10000;
+  //  step_size = 5;
+  //  max_iter = 10000;
+  max_iter = maxIterFo;
+  step_size = stepSizeFo;
+  NEIHOOD_SIZE = neiHoodSizeFo;
+  END_DIST_THRESHOLD = endDistThreshold;
   nearestNode = root;
   nearestDistance = distance(root->position, endPos);
 
@@ -110,8 +122,11 @@ shared_ptr<Node> RRT::getRandomNode() {
     int cntMax = 1000;
     do {
       cnt++;
-      point(0) = drand48() * WORLD_WIDTH;
-      point(1) = drand48() * WORLD_HEIGHT;
+      //      point(0) = drand48() * WORLD_WIDTH;
+      //      point(1) = drand48() * WORLD_HEIGHT;
+      for (int i = 0; i < point.rows(); i++) {
+        point[i] = drand48() * space_range[i] + space_min_limit[i];
+      }
       distAdded = distance(point, startPos) + distance(point, endPos);
       // to be optimized
       //          printf("minDist %f distAdded %f startToEnd %f\n",
@@ -123,8 +138,8 @@ shared_ptr<Node> RRT::getRandomNode() {
   }
 
   //  printf("nearestNode->distance %f\n", nearestNode->distance);
-  if (point.x() >= 0 && point.x() <= WORLD_WIDTH && point.y() >= 0 &&
-      point.y() <= WORLD_HEIGHT) {
+  /*  if (point.x() >= 0 && point.x() <= WORLD_WIDTH && point.y() >= 0 &&
+      point.y() <= WORLD_HEIGHT) */ {
     shared_ptr<Node> ret = shared_ptr<Node>(new Node);
     ret->position = point;
     return ret;
@@ -320,7 +335,7 @@ _type_position RRT::newConfig(shared_ptr<Node> q, shared_ptr<Node> qNearest) {
   _type_position intermediate = to - from;
   intermediate = intermediate / intermediate.norm();
   _type_position ret = from + step_size * intermediate;
-//  std::cout<<ret.transpose()<<endl;
+  //  std::cout<<ret.transpose()<<endl;
   return ret;
 }
 
@@ -424,13 +439,6 @@ bool RRT::restoreNodes() {
   return false;
 }
 
-void RRT::setStepSize(int step) {
-  step_size = step;
-  NEIHOOD_SIZE = step_size * 5;
-}
-
-void RRT::setMaxIterations(int iter) { max_iter = iter; }
-
 /**
  * @brief Delete all nodes using DFS technique.
  * @param root
@@ -442,7 +450,7 @@ void RRT::deleteNodes(shared_ptr<Node> root) {
   //  delete root;
 }
 
-//virtual bool RRT::isCollisionFree(_type_position &p1, _type_position &p2) {
+// virtual bool RRT::isCollisionFree(_type_position &p1, _type_position &p2) {
 //  return false;//!obstacles->isSegmentInObstacle(p1, p2);
 //}
 
@@ -453,7 +461,7 @@ void RRT::do_rrt_connect() {
     if (distance(q->position, qNearest1->position) > step_size) {
       _type_position newConfigTemp = newConfig(q, qNearest1);
       if (isCollisionFree(newConfigTemp, qNearest1->position)) {
-//          printf("CollisionFree\n");
+        //          printf("CollisionFree\n");
         shared_ptr<Node> qNew = shared_ptr<Node>(new Node);
         qNew->position = newConfigTemp;
         addConnect(qNearest1, qNew);
@@ -520,8 +528,8 @@ void RRT::do_rrt_star() {
 }
 
 void RRT::clearAll() {
-//  obstacles->obstacles.clear();
-//  obstacles->obstacles.resize(0);
+  //  obstacles->obstacles.clear();
+  //  obstacles->obstacles.resize(0);
   deleteNodes(root);
   deleteNodes(root1);
   deleteNodes(root2);

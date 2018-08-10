@@ -10,6 +10,7 @@
 #include <QPainterPath>
 #include <QPainter>
 #include <QRect>
+#include "constants.h"
 
 class RenderArea : public QWidget
 {

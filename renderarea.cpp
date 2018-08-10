@@ -5,7 +5,22 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent) {
   setAttribute(Qt::WA_StaticContents);
   scribbling = false;
-  rrt = new RRT_PLANNER;
+  _type_position startPos = _type_position::Zero();
+  _type_position endPos = _type_position::Zero();
+
+  startPos[0] = START_POS_X;
+  startPos[1] = START_POS_Y;
+  endPos[0] = END_POS_X;
+  endPos[1] = END_POS_Y;
+
+  _type_position space_max_limit=M_PI*_type_position::Identity();
+  _type_position space_min_limit=M_PI*_type_position::Identity();
+space_max_limit[0]=WORLD_WIDTH;
+space_max_limit[1]=WORLD_HEIGHT;
+space_min_limit[0]=0;
+space_min_limit[1]=0;
+
+  rrt = new RRT_PLANNER(startPos,endPos,MAX_ITER, STEP_SIZE,END_DIST_THRESHOLD, NEI_HOOD_SIZE,space_max_limit,space_min_limit);
 }
 
 /**

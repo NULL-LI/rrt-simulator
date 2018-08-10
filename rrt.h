@@ -9,7 +9,7 @@
 #include <boost/smart_ptr.hpp>
 #include <eigen3/Eigen/Dense>
 #include <vector>
-#include "constants.h"
+//#include "constants.h"
 // #include <typeinfo.h>
 
 using namespace std;
@@ -29,19 +29,20 @@ struct Node {
 };
 
 //#include "obstacles.h"
-//class Obstacles;
+// class Obstacles;
 
 class RRT {
  public:
-  float space_max_limit[10] = {WORLD_WIDTH, WORLD_HEIGHT, M_PI, M_PI, M_PI,
-                               M_PI,        M_PI,         M_PI, M_PI, M_PI};
-  float space_min_limit[10] = {0,     0,     -M_PI, -M_PI, -M_PI,
-                               -M_PI, -M_PI, -M_PI, -M_PI, -M_PI};
-  float space_range
-      [10];  //={WORLD_WIDTH,WORLD_HEIGHT,2*M_PI,2*M_PI,2*M_PI,2*M_PI};
+  _type_position space_max_limit;
+  _type_position space_min_limit;
+  _type_position space_range;
+  //  float space_range
+  //      [10];  //={WORLD_WIDTH,WORLD_HEIGHT,2*M_PI,2*M_PI,2*M_PI,2*M_PI};
 
   bool reached_flag;
-  RRT();
+  RRT(_type_position startPosFo, _type_position endPosFo, int maxIterFo,
+      float endDistThreshold, float stepSizeFo, float neiHoodSizeFo,
+      _type_position space_max_limit_fo, _type_position space_min_limit_fo);
   void initialize();
   shared_ptr<Node> getRandomNode();
   shared_ptr<Node> nearest(_type_position point);
@@ -54,10 +55,8 @@ class RRT {
   void add(shared_ptr<Node> qNearest, shared_ptr<Node> qNew);
   void addConnect(shared_ptr<Node> qNearest, shared_ptr<Node> qNew);
   bool reached();
-  void setStepSize(int step);
-  void setMaxIterations(int iter);
   void deleteNodes(shared_ptr<Node> root);
-//  Obstacles *obstacles;
+  //  Obstacles *obstacles;
   vector<shared_ptr<Node>> nodes, neighborNodes;
   vector<shared_ptr<Node>> path;
   shared_ptr<Node> root, lastNode;
@@ -70,6 +69,7 @@ class RRT {
   shared_ptr<Node> nearestNode;
   float nearestDistance;
   float NEIHOOD_SIZE;
+  float END_DIST_THRESHOLD;
   void costBiasAndCheck(shared_ptr<Node> q, float bias);
   vector<shared_ptr<Node>> nodes1, nodes2;
   vector<shared_ptr<Node>> path1, path2;
@@ -79,7 +79,7 @@ class RRT {
   void do_rrt_star();
 
   virtual void clearAll();
-  virtual bool isCollisionFree(_type_position &p1, _type_position &p2)=0;
+  virtual bool isCollisionFree(_type_position &p1, _type_position &p2) = 0;
 };
 
 #endif  // RRT_H

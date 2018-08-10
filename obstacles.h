@@ -7,6 +7,7 @@
 #include <eigen3/Eigen/Dense>
 #include <assert.h>
 #include "rrt.h"
+#include "constants.h"
 
 using namespace Eigen;
 using namespace std;
