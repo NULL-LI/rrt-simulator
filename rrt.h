@@ -13,7 +13,6 @@
 
 using namespace std;
 using namespace Eigen;
-class Obstacles;
 //#define Random(x) (rand() % x)
 
 #define SPACE_DIMENSION 9
