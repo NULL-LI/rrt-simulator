@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include "renderarea.h"
-#include "rrt.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +17,7 @@ public:
 private:
     Ui::MainWindow *ui;
     RenderArea *renderArea;
-    RRT *rrt;
+    RRT_PLANNER *rrt;
     bool simulated;
     bool resetFlag;
 private slots:

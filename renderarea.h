@@ -1,7 +1,7 @@
 #ifndef RENDERAREA_H
 #define RENDERAREA_H
 
-#include "rrt.h"
+#include "rrtplanner.h"
 #include <QWidget>
 #include <QColor>
 #include <QDebug>
@@ -16,7 +16,7 @@ class RenderArea : public QWidget
     Q_OBJECT
 public:
     RenderArea(QWidget *parent = 0);
-    RRT *rrt;
+    RRT_PLANNER *rrt;
 protected:
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);

@@ -5,7 +5,7 @@
 RenderArea::RenderArea(QWidget *parent) : QWidget(parent) {
   setAttribute(Qt::WA_StaticContents);
   scribbling = false;
-  rrt = new RRT;
+  rrt = new RRT_PLANNER;
 }
 
 /**
