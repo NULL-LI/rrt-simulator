@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <stdio.h>
+//#include <iostream>
 #include <stdlib.h>
 #include <boost/make_shared.hpp>
 #include <boost/smart_ptr.hpp>
@@ -27,8 +28,8 @@ struct Node {
   shared_ptr<Node> root;
 };
 
-#include "obstacles.h"
-class Obstacles;
+//#include "obstacles.h"
+//class Obstacles;
 
 class RRT {
  public:

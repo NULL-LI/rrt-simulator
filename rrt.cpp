@@ -320,6 +320,7 @@ _type_position RRT::newConfig(shared_ptr<Node> q, shared_ptr<Node> qNearest) {
   _type_position intermediate = to - from;
   intermediate = intermediate / intermediate.norm();
   _type_position ret = from + step_size * intermediate;
+//  std::cout<<ret.transpose()<<endl;
   return ret;
 }
 
@@ -452,6 +453,7 @@ void RRT::do_rrt_connect() {
     if (distance(q->position, qNearest1->position) > step_size) {
       _type_position newConfigTemp = newConfig(q, qNearest1);
       if (isCollisionFree(newConfigTemp, qNearest1->position)) {
+//          printf("CollisionFree\n");
         shared_ptr<Node> qNew = shared_ptr<Node>(new Node);
         qNew->position = newConfigTemp;
         addConnect(qNearest1, qNew);

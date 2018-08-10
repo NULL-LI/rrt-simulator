@@ -7,7 +7,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-set(CMAKE_CXX_FLAGS "-march=native -O3 -Wall  -pthread")
+set(CMAKE_CXX_FLAGS "-march=native -O0 -Wall  -pthread")
 set(QMAKE_CXXFLAGS += -g)
 
 find_package(Qt5Widgets REQUIRED)
