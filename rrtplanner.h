@@ -11,12 +11,12 @@
 //#include "constants.h"
 #include <rrt.h>
 // #include <typeinfo.h>
+#include "obstacles.h"
+class Obstacles;
 
 using namespace std;
 using namespace Eigen;
 
-#include "obstacles.h"
-class Obstacles;
 
 class RRT_PLANNER : public RRT {
  public:
