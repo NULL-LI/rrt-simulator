@@ -29,6 +29,6 @@ $ ../bin/rrt-test
 ```
 ## Interface
 
-![RRT Simulator](imgs/rrt-sim.png)
+![RRT Simulator](imgs/informedrrtsim.png)
 
 *Note: Draw obstacles by clicking and dragging on the field.*
