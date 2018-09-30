@@ -30,6 +30,7 @@
 bin/
 build/
 qt-build/
+cmake-build-debug/
 *.kdev*
 *.user
 *.txt.user

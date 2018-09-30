@@ -55,8 +55,19 @@ bool Obstacles::isSegmentInObstacle(_type_position &p1, _type_position &p2)
         QLineF::IntersectType x3 = lineSegment.intersect(lseg3, intersectPt);
         QLineF::IntersectType x4 = lineSegment.intersect(lseg4, intersectPt);
         // check for bounded intersection. IntersectType for bounded intersection is 1.
+
+        if(obstacles[i].first.x()<=p1[0]&&obstacles[i].second.x()>=p1[0]&&obstacles[i].first.y()<=p1[1]&&obstacles[i].second.y()>=p1[1])
+        {return true;}
+        if(obstacles[i].first.x()<=p2[0]&&obstacles[i].second.x()>=p2[0]&&obstacles[i].first.y()<=p2[1]&&obstacles[i].second.y()>=p2[1])
+        {return true;}
+
         if (x1 == 1 || x2 == 1 || x3 == 1 || x4 == 1)
-            return true;
+        {return true;}
+
+
+
+
+
     }
     return false;
 }
