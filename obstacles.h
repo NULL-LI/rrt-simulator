@@ -6,6 +6,7 @@
 #include <vector>
 #include <eigen3/Eigen/Dense>
 #include <assert.h>
+#include "rrt.h"
 #include "constants.h"
 
 using namespace Eigen;
@@ -16,8 +17,10 @@ class Obstacles
 public:
     Obstacles();
     void addObstacle(Vector2f firstPoint, Vector2f secondPoint);
-    bool isSegmentInObstacle(Vector2f &p1, Vector2f &p2);
+    virtual bool isSegmentInObstacle(_type_position &p1, _type_position &p2);
     vector<pair<Vector2f, Vector2f> > obstacles;
 };
+
+
 
 #endif // OBSTACLES_H

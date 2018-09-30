@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(RRTSim)
 
+#set( CMAKE_CXX_FLAGS "-std=c++11 -march=native -O3" )
+add_compile_options(-std=c++11)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-set(CMAKE_CXX_FLAGS "-march=native -O3 -Wall")
+set(CMAKE_CXX_FLAGS "-march=native -O0 -Wall  -pthread")
+set(QMAKE_CXXFLAGS += -g)
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core REQUIRED)
@@ -23,5 +26,5 @@ include_directories(
   ${CUSTOM_EIGEN}
 )
 
-add_executable(rrt-test main.cpp mainwindow.cpp obstacles.cpp renderarea.cpp rrt.cpp)
+add_executable(rrt-test main.cpp mainwindow.cpp obstacles.cpp renderarea.cpp rrt.cpp rrtplanner.cpp)
 target_link_libraries(rrt-test Qt5::Widgets Qt5::Gui)

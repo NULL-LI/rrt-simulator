@@ -1,7 +1,7 @@
 #ifndef RENDERAREA_H
 #define RENDERAREA_H
 
-#include "rrt.h"
+#include "rrtplanner.h"
 #include <QWidget>
 #include <QColor>
 #include <QDebug>
@@ -10,13 +10,14 @@
 #include <QPainterPath>
 #include <QPainter>
 #include <QRect>
+#include "constants.h"
 
 class RenderArea : public QWidget
 {
     Q_OBJECT
 public:
     RenderArea(QWidget *parent = 0);
-    RRT *rrt;
+    RRT_PLANNER *rrt;
 protected:
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -27,6 +28,7 @@ protected:
     void drawEndPos(QPainter &event);
     void drawObstacles(QPainter &event);
     void drawNodes(QPainter &event);
+    void drawTree(QPainter &painter,shared_ptr<Node> root);
 private:
     bool scribbling;
     QPoint lastMouseClickedPoint;
