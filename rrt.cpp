@@ -271,7 +271,7 @@ void RRT::optimizePath(shared_ptr<Node> q /*,  vector<shared_ptr<Node>> neighbor
         if (isCollisionFree(q->position, neighborNodes[i]->position)) {
             float disti = distance(q->position, neighborNodes[i]->position);
 
-            if (disti + neighborNodes[i]->cost < q->cost) { //
+            if (disti + neighborNodes[i]->cost < q->cost) { //找到更优化的路径
                 vector<shared_ptr<Node>>::iterator it = q->parent->children.begin();
                 for (; it != q->parent->children.end();) {//删除与父节点的链接
                     if ((*it) == q) {
@@ -289,7 +289,7 @@ void RRT::optimizePath(shared_ptr<Node> q /*,  vector<shared_ptr<Node>> neighbor
                 float biasCostQ = disti + neighborNodes[i]->cost - q->cost;
                 costBiasAndCheck(q, biasCostQ);
                 q->parent = neighborNodes[i];
-                q->cost = disti + neighborNodes[i]->cost;//
+                q->cost = disti + neighborNodes[i]->cost;//指向新的父节点
                 neighborNodes[i]->children.push_back(q);
             }
 
@@ -297,27 +297,30 @@ void RRT::optimizePath(shared_ptr<Node> q /*,  vector<shared_ptr<Node>> neighbor
                 if (i == j) {
                     continue;
                 } else {
-                    float distj = distance(q->position, neighborNodes[j]->position);
+                    if (isCollisionFree(q->position, neighborNodes[j]->position)) {
 
-                    if (disti + distj + neighborNodes[i]->cost < neighborNodes[j]->cost) {
-                        vector<shared_ptr<Node>>::iterator it =
-                                neighborNodes[j]->parent->children.begin();
-                        for (; it != neighborNodes[j]->parent->children.end();) {
-                            if ((*it) == neighborNodes[j]) {
-                                //删除指定元素，返回指向删除元素的下一个元素的位置的迭代器
-                                it = neighborNodes[j]->parent->children.erase(it);
-                            } else {
-                                //迭代器指向下一个元素位置
-                                ++it;
+                        float distj = distance(q->position, neighborNodes[j]->position);
+
+                        if (disti + distj + neighborNodes[i]->cost < neighborNodes[j]->cost) {
+                            vector<shared_ptr<Node>>::iterator it =
+                                    neighborNodes[j]->parent->children.begin();
+                            for (; it != neighborNodes[j]->parent->children.end();) {
+                                if ((*it) == neighborNodes[j]) {
+                                    //删除指定元素，返回指向删除元素的下一个元素的位置的迭代器
+                                    it = neighborNodes[j]->parent->children.erase(it);
+                                } else {
+                                    //迭代器指向下一个元素位置
+                                    ++it;
+                                }
                             }
+                            float biasCostJ =
+                                    disti + distj + neighborNodes[i]->cost - neighborNodes[j]->cost;
+                            costBiasAndCheck(neighborNodes[j], biasCostJ);
+                            neighborNodes[j]->parent = q;
+                            neighborNodes[j]->cost = disti + distj + neighborNodes[i]->cost;
+                            q->children.push_back(neighborNodes[j]);
+                            //          printf("Optimize Finished \n");
                         }
-                        float biasCostJ =
-                                disti + distj + neighborNodes[i]->cost - neighborNodes[j]->cost;
-                        costBiasAndCheck(neighborNodes[j], biasCostJ);
-                        neighborNodes[j]->parent = q;
-                        neighborNodes[j]->cost = disti + distj + neighborNodes[i]->cost;
-                        q->children.push_back(neighborNodes[j]);
-                        //          printf("Optimize Finished \n");
                     }
                 }
             }
