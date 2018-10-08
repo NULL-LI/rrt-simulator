@@ -12,7 +12,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6171d1c4-a6e9-4ce0-992b-67e618509d14" name="Default Changelist" comment="" />
+    <list default="true" id="6171d1c4-a6e9-4ce0-992b-67e618509d14" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,11 +27,11 @@
     <session id="-1202739002">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.5" value="3" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -121,8 +123,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rrt.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="493" column="25" selection-start-line="493" selection-start-column="25" selection-end-line="493" selection-end-column="25" />
+            <state relative-caret-position="249">
+              <caret line="498" selection-start-line="498" selection-end-line="498" />
             </state>
           </provider>
         </entry>
@@ -163,18 +165,17 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2244" />
-    <option name="y" value="86" />
-    <option name="width" value="1398" />
-    <option name="height" value="994" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="2040" />
+    <option name="y" value="111" />
+    <option name="width" value="1861" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -186,6 +187,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -241,22 +243,24 @@
       <workItem from="1538296824382" duration="3182000" />
       <workItem from="1538300028448" duration="2229000" />
       <workItem from="1538972046272" duration="1764000" />
+      <workItem from="1539010598094" duration="258000" />
+      <workItem from="1539010873027" duration="13000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7175000" />
+    <option name="totallyTimeSpent" value="7446000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2244" y="127" width="1398" height="994" extended-state="0" />
+    <frame x="2040" y="111" width="1861" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4988426" visible="true" weight="0.25739646" />
-      <window_info id="Structure" order="1" sideWeight="0.5011574" side_tool="true" visible="true" weight="0.25739646" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49673912" visible="true" weight="0.19669421" />
+      <window_info id="Structure" order="1" sideWeight="0.50326085" side_tool="true" visible="true" weight="0.19669421" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.4027778" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.40271968" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -317,6 +321,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/constants.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/rrtplanner.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="672">
@@ -331,17 +342,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/constants.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rrt.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="493" column="25" selection-start-line="493" selection-start-column="25" selection-end-line="493" selection-end-column="25" />
+        <state relative-caret-position="249">
+          <caret line="498" selection-start-line="498" selection-end-line="498" />
         </state>
       </provider>
     </entry>
