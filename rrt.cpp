@@ -464,6 +464,7 @@ void RRT::deleteNodes(shared_ptr<Node> root) {
 void RRT::do_rrt_connect() {
     shared_ptr<Node> q = getRandomNode();
     if (q) {
+//        bool flag1= false,flag2= false;
         shared_ptr<Node> qNearest1 = nearest1(q->position);
         if (distance(q->position, qNearest1->position) > step_size) {
             _type_position newConfigTemp = newConfig(q, qNearest1);
@@ -471,6 +472,7 @@ void RRT::do_rrt_connect() {
                 //          printf("CollisionFree\n");
                 shared_ptr<Node> qNew = shared_ptr<Node>(new Node);
                 qNew->position = newConfigTemp;
+//                flag1= true;
                 addConnect(qNearest1, qNew);
             }
         }
@@ -480,7 +482,17 @@ void RRT::do_rrt_connect() {
             if (isCollisionFree(newConfigTemp, qNearest2->position)) {
                 shared_ptr<Node> qNew = shared_ptr<Node>(new Node);
                 qNew->position = newConfigTemp;
+//                flag2=true;
                 addConnect(qNearest2, qNew);
+            }
+        }
+        if ((distance(q->position, qNearest1->position) < END_DIST_THRESHOLD) &&
+            (distance(q->position, qNearest2->position) < END_DIST_THRESHOLD)) {
+            if (isCollisionFree((qNearest1->position), (q->position)) &&
+                isCollisionFree((qNearest2->position), (q->position))) {
+                lastNode1=qNearest1;
+                lastNode2=qNearest2;
+                reached_flag = true;
             }
         }
     }
